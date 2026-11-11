@@ -527,8 +527,10 @@
             right: 0;
             background: #ffffff;
             border-top: 1px solid var(--borda);
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 6px;
             padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
             z-index: 99;
             box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.04);
@@ -551,7 +553,10 @@
             padding: 6px 2px;
             transition: var(--transition);
             border-radius: var(--radius-sm);
-            width: 100%;
+            flex: 1 1 0;
+            width: auto;
+            max-width: 130px;
+            min-width: 0;
             min-height: 48px;
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
@@ -1952,6 +1957,10 @@
         .gasto-card .gasto-header .categoria.farmacia { background: #fce4ec; color: #880e4f; }
         .gasto-card .gasto-header .categoria.mercado { background: #e8f5e9; color: #1b5e20; }
         .gasto-card .gasto-header .categoria.oficina { background: #f5f5f5; color: #424242; }
+        .gasto-card .gasto-header .categoria.outros { background: #ede7f6; color: #4527a0; }
+        .gasto-filtros { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 14px; }
+        .gasto-filtro-total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; padding: 10px 14px; background: var(--verde-muito-claro); border: 1px solid var(--verde-claro); border-radius: 12px; font-size: 14px; }
+        .gasto-filtro-total b { color: #b91c1c; font-size: 16px; }
 
         .gasto-card .gasto-header .valor {
             font-size: 20px;
@@ -2242,6 +2251,8 @@
         .cheque-credito b { color:var(--verde); }
         .cheque-tag.off { background:#e5e7eb; color:#6b7280; }
         .cheque-card.inativo { opacity:.55; border-left-color:#9ca3af; }
+        .cheque-cli-item { padding:10px 14px; cursor:pointer; border-bottom:1px solid var(--borda); }
+        .cheque-cli-item:hover { background:var(--verde-claro); }
         .cheque-mes { display:flex; justify-content:space-between; align-items:center; background:var(--verde-escuro); color:#fff; padding:10px 16px; border-radius:10px; margin:22px 0 10px; font-weight:700; font-size:14px; }
         .cheque-mes b { color:#d8f3dc; }
         .cheque-stat-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -2392,6 +2403,52 @@
             .modal-senha .senha-box { padding: 24px 20px; border-radius: 20px; }
         }
 
+
+        /* ===== Painel: botões iguais, na mesma grade ===== */
+        .painel-acoes { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+        .painel-acoes .btn { width: 100%; height: 100%; min-height: 56px; margin: 0; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.25; }
+        @media (max-width: 900px) { .painel-acoes { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+        @media (max-width: 480px) { .painel-acoes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } }
+
+        /* ===== Reserva: barra até 100% ===== */
+        .reserva-range { --f: 0; -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 16px; min-height: 0; padding: 0; margin: 10px 0 6px; border: none; border-radius: 999px; outline: none; cursor: pointer; box-shadow: inset 0 1px 3px rgba(0,0,0,0.12);
+            background: linear-gradient(to right, var(--verde) 0, var(--verde) calc(15px + (100% - 30px) * var(--f)), #dfe7e2 calc(15px + (100% - 30px) * var(--f)), #dfe7e2 100%); }
+        .reserva-range:focus { box-shadow: inset 0 1px 3px rgba(0,0,0,0.12), 0 0 0 4px rgba(45,106,79,0.12); background-color: transparent; }
+        .reserva-range::-webkit-slider-runnable-track { height: 16px; border-radius: 999px; background: transparent; }
+        .reserva-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 30px; height: 30px; margin-top: -7px; border-radius: 50%; background: #fff; border: 5px solid var(--verde); box-shadow: 0 2px 8px rgba(0,0,0,0.28); }
+        .reserva-range::-moz-range-track { height: 16px; border-radius: 999px; background: #dfe7e2; }
+        .reserva-range::-moz-range-progress { height: 16px; border-radius: 999px; background: var(--verde); }
+        .reserva-range::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 5px solid var(--verde); box-shadow: 0 2px 8px rgba(0,0,0,0.28); }
+        .reserva-escala { display: flex; justify-content: space-between; font-size: 11px; color: var(--sub); margin-bottom: 12px; }
+        .reserva-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 18px; }
+        .reserva-chips button { border: 2px solid var(--borda); background: #fff; color: var(--sub); font-family: inherit; font-weight: 700; font-size: 13px; padding: 7px 14px; border-radius: 999px; cursor: pointer; transition: var(--transition); }
+        .reserva-chips button.ativo { background: var(--verde); border-color: var(--verde); color: #fff; }
+
+        /* ===== Simulador de antecipação ===== */
+        .antec-lista { margin-top: 14px; max-height: 52vh; overflow-y: auto; overflow-x: hidden; padding-right: 2px; }
+        .antec-item { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; margin-bottom: 8px; background: #fff; border: 1px solid var(--borda); border-radius: 12px; cursor: pointer; transition: var(--transition); }
+        .antec-item:hover { border-color: var(--verde); }
+        .antec-item.off { opacity: 0.45; }
+        .antec-item input[type="checkbox"] { width: 20px; height: 20px; min-height: 0; margin: 0; padding: 0; accent-color: var(--verde); pointer-events: none; }
+        .antec-nome { font-weight: 700; font-size: 14px; line-height: 1.3; overflow-wrap: anywhere; }
+        .antec-nome small { font-weight: 500; color: var(--sub); }
+        .antec-meta { margin-top: 3px; font-size: 12px; color: var(--sub); line-height: 1.5; }
+        .antec-desc { color: #b91c1c; font-weight: 600; }
+        .antec-liq { text-align: right; white-space: nowrap; }
+        .antec-liq span { display: block; font-size: 11px; color: var(--sub); }
+        .antec-liq b { font-size: 15px; color: var(--verde); }
+        .antec-resumo { margin-top: 12px; padding: 14px 16px; background: var(--verde-muito-claro); border: 1px solid var(--verde-claro); border-radius: 12px; display: grid; gap: 8px; }
+        .antec-resumo > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 14px; }
+        .antec-resumo span { color: var(--sub); }
+        .antec-total { border-top: 1px dashed var(--verde-claro); padding-top: 10px; }
+        .antec-total b { font-size: 20px; color: var(--verde); }
+        @media (max-width: 520px) {
+            .antec-lista { max-height: 46vh; }
+            .antec-item { grid-template-columns: 22px minmax(0, 1fr); row-gap: 8px; }
+            .antec-liq { grid-column: 2; display: flex; justify-content: space-between; align-items: baseline; text-align: left; padding-top: 8px; border-top: 1px solid var(--borda); }
+            .antec-liq span { display: inline; }
+        }
+
         .aviso-linha { padding: 9px 0; border-bottom: 1px solid var(--borda); line-height: 1.6; }
         .aviso-linha:last-child { border-bottom: none; }
         .aviso-linha .btn { margin: 2px 4px 2px 0; }
@@ -2453,11 +2510,10 @@
             <button class="ativo" data-tab="dashboard"><span class="icone">📊</span><span class="texto">Painel</span></button>
             <button data-tab="clientes"><span class="icone">👥</span><span class="texto">Clientes</span></button>
             <button data-tab="produtos"><span class="icone">📦</span><span class="texto">Produtos</span></button>
-            <button data-tab="pedido"><span class="icone">🛒</span><span class="texto">Pedido</span></button>
-            <button data-tab="historico"><span class="icone">📄</span><span class="texto">Histórico</span></button>
-            <button data-tab="rota"><span class="icone">📍</span><span class="texto">Rota</span></button>
+            <button data-tab="rota"><span class="icone">📍</span><span class="texto">Cidades</span></button>
+            <button data-tab="gastos"><span class="icone">💸</span><span class="texto">Gastos</span></button>
             <button data-tab="cheques"><span class="icone">🧾</span><span class="texto">Cheques</span></button>
-            <button data-tab="admin" onclick="abrirAdmin()"><span class="icone admin-icon">⚙️</span><span class="texto">Admin</span></button>
+            <button data-tab="reserva"><span class="icone">💰</span><span class="texto">Reserva</span></button>
         </div>
     </header>
 
@@ -2466,47 +2522,18 @@
         <!-- ===== DASHBOARD ===== -->
         <div class="section active" id="tab-dashboard">
             <div class="card">
-                <div class="card-title">📊 Painel do Vendedor</div>
-                <p style="color:var(--sub);margin-bottom:16px;font-size:15px;">Visão geral do dia e atalhos rápidos.</p>
-                <div class="stats-grid" id="statsGrid">
-                    <div class="stat-card">
-                        <div class="label">📈 Vendas do dia</div>
-                        <div class="value-wrapper">
-                            <div class="value"><span class="moeda">R$</span> <span id="statVendas" class="valor-oculto">0,00</span></div>
-                            <button class="btn-mostrar" onclick="abrirSenhaValores('statVendas')">🔒 Mostrar</button>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="label">📦 Pedidos</div>
-                        <div class="value-wrapper">
-                            <div class="value"><span id="statPedidos" class="valor-oculto">0</span></div>
-                            <button class="btn-mostrar" onclick="abrirSenhaValores('statPedidos')">🔒 Mostrar</button>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="label">📍 Clientes na rota</div>
-                        <div class="value-wrapper">
-                            <div class="value"><span id="statRota" class="valor-oculto">0</span></div>
-                            <button class="btn-mostrar" onclick="abrirSenhaValores('statRota')">🔒 Mostrar</button>
-                        </div>
-                    </div>
-                    <div class="stat-card" style="border-left-color:#3b82f6;">
-                        <div class="label">📅 Data</div>
-                        <div class="value-wrapper">
-                            <div class="value" style="font-size:20px; color:#3b82f6;"><span id="statDataAtual">--/--</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;">
-                    <button class="btn btn-solid" onclick="navegar('pedido')">🛒 Novo Pedido</button>
-                    <button class="btn btn-outline" onclick="navegar('clientes')">👥 Ver Clientes</button>
-                    <button class="btn btn-warning" onclick="navegar('rota')">📍 Rota do Dia</button>
+                <div class="card-title">📊 Painel</div>
+                <div style="display:inline-block;background:var(--verde-claro);color:var(--verde);border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700;margin-bottom:14px;">📅 <span id="statDataAtual">--/--</span></div>
+                <div class="painel-acoes">
                     <button class="btn btn-info" onclick="exportarBackup()">💾 Backup JSON</button>
                     <button class="btn btn-success" onclick="importarBackup()">📥 Importar Backup</button>
-                    <button class="btn btn-gold" onclick="abrirAdmin()">⚙️ Admin</button>
-                    <button class="btn btn-danger" onclick="ocultarTodosValores()">🔒 Ocultar Valores</button>
-                    <button class="btn btn-warning" onclick="navegar('gastos')">💰 Controle de Gastos</button>
+                    <button class="btn btn-warning" onclick="navegar('rota')">📍 Cidades</button>
+                    <button class="btn btn-warning" onclick="navegar('gastos')">💸 Controle de Gastos</button>
                     <button class="btn btn-success" onclick="navegar('cheques')">🧾 Controle de Cheques</button>
+                    <button class="btn btn-gold" onclick="navegar('reserva')">💰 Reserva</button>
+                </div>
+                <div style="margin-top:16px;padding-top:14px;border-top:1px dashed var(--borda);display:flex;justify-content:flex-end;">
+                    <button class="btn btn-danger btn-sm" onclick="resetarTudo()">🔄 Resetar tudo</button>
                 </div>
             </div>
             <div class="card mt-16">
@@ -2522,7 +2549,6 @@
                     <div class="card-title">👥 Clientes <span class="badge-count" id="clientesCount">0</span></div>
                     <div class="btn-group-actions">
                         <button class="btn btn-solid btn-sm" onclick="abrirModalCliente()">+ Novo</button>
-                        <button class="btn btn-info btn-sm" onclick="abrirReativacao()">📞 Reativar</button>
                         <button class="btn btn-danger btn-sm" onclick="apagarTodosClientes()">🗑️ Todos</button>
                     </div>
                 </div>
@@ -2564,168 +2590,16 @@
             </div>
         </div>
 
-        <!-- ===== PEDIDO ===== -->
-        <div class="section" id="tab-pedido">
-            <div class="card">
-                <div class="card-title">🛒 Novo Pedido</div>
-
-                <!-- NÚMERO DO PEDIDO MANUAL -->
-                <div class="campo-numero-pedido">
-                    <label>🔢 Nº do Pedido:</label>
-                    <input type="text" id="numeroPedidoManual" placeholder="003" maxlength="5" oninput="validarNumeroPedido(this)">
-                    <span class="sugestao">Próximo: <strong id="sugestaoNumeroPedido">001</strong></span>
-                    <span style="font-size:11px;color:var(--sub);margin-left:4px;">(deixe em branco para automático)</span>
-                </div>
-
-                <!-- ÁREA DE FOTO/OCR -->
-                <div style="background:var(--verde-claro);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid var(--borda);">
-                    <div style="font-weight:700;color:var(--verde);font-size:16px;margin-bottom:10px;">📸 Foto do Pedido</div>
-                    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-                        <button class="btn btn-info" onclick="document.getElementById('fotoInput').click()">📷 Tirar Foto</button>
-                        <input type="file" id="fotoInput" accept="image/*" capture="environment" style="display:none" onchange="processarFoto(this)">
-                        <span style="font-size:13px;color:var(--sub);" id="statusFoto">Nenhuma foto selecionada</span>
-                    </div>
-                    <div id="previewFotoArea" style="display:none;" class="foto-preview">
-                        <img id="miniaturaFoto" onclick="abrirFotoAmpliada()">
-                        <div class="info">
-                            <div class="status" id="statusFotoDetail">✅ Foto carregada!</div>
-                            <div class="detalhes" id="fotoDetalhes">Clique na imagem para ampliar</div>
-                            <div class="botoes">
-                                <button class="btn btn-sm btn-success" onclick="executarOCR()">🔍 Ler com OCR</button>
-                                <button class="btn btn-sm btn-danger" onclick="removerFoto()">🗑️ Remover</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="progress-bar-ocr" id="progressBarOCR">
-                        <div class="progress-fill" id="progressFillOCR"></div>
-                    </div>
-                </div>
-
-                <!-- DADOS DO CLIENTE -->
-                <div style="background:var(--verde-claro);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid var(--borda);">
-                    <div style="font-weight:700;color:var(--verde);font-size:16px;margin-bottom:10px;">👤 Dados do Cliente</div>
-                    <div class="row">
-                        <div>
-                            <label>Buscar Cliente <span class="required">*</span></label>
-                            <input type="text" id="buscaClientePedido" placeholder="Digite o nome, cidade..." oninput="buscarClientePedido()" autocomplete="off">
-                            <div id="resultadoBuscaCliente" style="display:none;border:1px solid var(--borda);border-radius:10px;max-height:160px;overflow-y:auto;background:#fff;position:absolute;z-index:10;width:calc(100% - 2px);margin-top:2px;box-shadow:var(--sombra);"></div>
-                        </div>
-                        <div>
-                            <label>📅 Data do Pedido</label>
-                            <input type="date" id="pedidoData">
-                        </div>
-                    </div>
-                    <div id="clienteSelecionadoInfo" class="info-cliente-selecionado">
-                        <div class="nome" id="clienteSelecionadoNome">--</div>
-                        <div class="detalhe" id="clienteSelecionadoDetalhe">--</div>
-                    </div>
-                    <input type="hidden" id="clientePedidoId" value="">
-                </div>
-
-                <!-- PRODUTO -->
-                <div style="background:var(--verde-claro);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid var(--borda);">
-                    <div style="font-weight:700;color:var(--verde);font-size:16px;margin-bottom:10px;">📦 Produto</div>
-                    <div class="row-3">
-                        <div>
-                            <label>Produto <span class="required">*</span></label>
-                            <select id="selectProdutoPedido" onchange="atualizarPrecoProduto()">
-                                <option value="">Selecione</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label>💰 Preço Unitário (R$) <span class="required">*</span></label>
-                            <input type="number" id="precoProdutoPedido" placeholder="Digite o preço" step="0.01" min="0" oninput="validarPreco(this); this.dataset.auto='';">
-                            <div id="dicaPrecoPedido" style="font-size:12px;color:var(--sub);margin-top:4px;"></div>
-                        </div>
-                        <div>
-                            <label>📝 Especificações</label>
-                            <input type="text" id="especificacoesPedido" placeholder="Cor, bordado, goma..." maxlength="100" oninput="atualizarEspecificacaoDinamica(this.value)">
-                        </div>
-                    </div>
-                    <div class="btn-group" style="margin-top:10px;">
-                        <button class="btn btn-info" onclick="abrirModalNumeracao()">📊 Adicionar Numeração</button>
-                        <button class="btn btn-warning" onclick="limparPedidoAtual()">🗑️ Limpar Pedido</button>
-                    </div>
-                </div>
-
-                <!-- ITENS DO PEDIDO -->
-                <div style="margin-bottom:16px;">
-                    <div style="font-weight:700;color:var(--verde);font-size:16px;margin-bottom:10px;">📋 Itens do Pedido</div>
-                    <div class="table-wrap">
-                        <table>
-                            <thead><tr><th>Cód.</th><th>Solado</th><th>Numeração</th><th>Qtd</th><th>Unit.</th><th>Esp.</th><th>Subtotal</th><th>Ações</th></tr></thead>
-                            <tbody id="tabelaItensPedido"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- RESUMO -->
-                <div class="resumo-pedido">
-                    <div style="flex:1;">
-                        <div class="resumo-linha"><span class="rotulo">Subtotal</span><span class="valor" id="resumoSubtotal">R$ 0,00</span></div>
-                        <div class="resumo-linha">
-                            <span class="rotulo">Desconto</span>
-                            <div class="desconto-area">
-                                <div class="desconto-input-group">
-                                    <label>R$</label>
-                                    <input type="number" id="descontoValor" value="0" min="0" step="0.01" oninput="calcularDescontoPorValor(this)">
-                                </div>
-                                <div class="desconto-input-group">
-                                    <label>%</label>
-                                    <input type="number" id="descontoPorcentagem" value="0" min="0" max="100" step="0.1" oninput="calcularDescontoPorPorcentagem(this)">
-                                </div>
-                                <span class="desconto-info">Economia: <strong id="descontoEconomia">R$ 0,00</strong></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="total"><small>TOTAL FINAL</small><div id="resumoTotal">R$ 0,00</div></div>
-                </div>
-
-                <!-- ASSINATURAS -->
-                <div class="assinatura-area">
-                    <div class="box-assinatura">
-                        <span class="label">✍️ Vendedor</span>
-                        <canvas id="assVendedor"></canvas>
-                        <input type="text" id="nomeVendedor" placeholder="Nome do Vendedor" maxlength="50">
-                        <button class="btn btn-sm btn-outline mt-8" onclick="limparAssinatura('vendedor')">🧹 Limpar</button>
-                    </div>
-                    <div class="box-assinatura">
-                        <span class="label">✍️ Cliente</span>
-                        <canvas id="assCliente"></canvas>
-                        <input type="text" id="nomeClienteAss" placeholder="Nome do Cliente" maxlength="50">
-                        <button class="btn btn-sm btn-outline mt-8" onclick="limparAssinatura('cliente')">🧹 Limpar</button>
-                    </div>
-                </div>
-
-                <div class="btn-group" style="justify-content:flex-end;">
-                    <button class="btn btn-warning" onclick="salvarRascunho()">💾 Rascunho</button>
-                    <button class="btn btn-success" onclick="finalizarPedido()">✅ Finalizar</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== HISTÓRICO ===== -->
-        <div class="section" id="tab-historico">
-            <div class="card">
-                <div class="flex-between">
-                    <div class="card-title">📄 Histórico <span class="badge-count" id="historicoCount">0</span></div>
-                    <button class="btn btn-danger btn-sm" onclick="apagarTodosPedidos()">🗑️ Apagar Todos</button>
-                </div>
-                <div class="row" style="margin-top:12px;">
-                    <div><label>🔍 Buscar</label><input type="text" id="buscaHistorico" placeholder="Nº, cliente, cidade..." oninput="renderizarHistorico()"></div>
-                    <div><label>📅 Filtrar</label><select id="filtroHistorico" onchange="renderizarHistorico()"><option value="todos">Todos</option><option value="hoje">Hoje</option><option value="semana">Esta semana</option><option value="mes">Este mês</option></select></div>
-                </div>
-                <div id="listaHistorico" style="margin-top:14px;"></div>
-            </div>
-        </div>
-
         <!-- ===== ROTA ===== -->
         <div class="section" id="tab-rota">
             <div class="card">
-                <div class="card-title">📍 Rota do Dia <span class="badge-count" id="rotaCount">0</span></div>
-                <p style="color:var(--sub);margin-bottom:12px;font-size:15px;">Clientes marcados para visita.</p>
-                <button class="btn-mostrar-dados" onclick="alternarVisibilidadeRota()">👁️ Mostrar clientes</button>
-                <div id="listaRota" style="margin-top:10px;"></div>
+                <div class="flex-between" style="margin-bottom:14px;">
+                    <div class="card-title" style="margin:0;">📍 Regiões de Atendimento</div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="btn btn-sm btn-success" onclick="adicionarRegiao()">➕ Nova</button>
+                    </div>
+                </div>
+                <div id="regioesContainer"></div>
             </div>
         </div>
 
@@ -2741,7 +2615,7 @@
                         <div class="value dourado">R$ <span id="gastoHoje">0,00</span></div>
                     </div>
                     <div class="gasto-stat-card">
-                        <div class="label">📆 Esta Semana</div>
+                        <div class="label">📆 Esta Semana (dom–sáb)</div>
                         <div class="value">R$ <span id="gastoSemana">0,00</span></div>
                     </div>
                     <div class="gasto-stat-card">
@@ -2768,6 +2642,7 @@
                                 <option value="farmacia">💊 Farmácia</option>
                                 <option value="mercado">🛒 Mercado</option>
                                 <option value="oficina">🔧 Oficina</option>
+                                <option value="outros">📌 Outros</option>
                             </select>
                         </div>
                         <div>
@@ -2792,6 +2667,16 @@
                     </div>
                 </div>
 
+                <div class="gasto-filtros">
+                    <div><label>👁️ Ver gastos</label>
+                        <select id="gastoVer" onchange="carregarGastos()">
+                            <option value="todos">Todos os gastos</option>
+                            <option value="mes">Separados por mês</option>
+                            <option value="semana">Separados por semana (dom–sáb)</option>
+                        </select></div>
+                    <div id="gastoPeriodoWrap" style="display:none;"><label id="gastoPeriodoLabel">📆 Período</label>
+                        <select id="gastoPeriodo" onchange="carregarGastos()"><option value="">Todos</option></select></div>
+                </div>
                 <div id="listaGastos"></div>
             </div>
         </div>
@@ -2805,18 +2690,15 @@
                 <div class="gasto-stat-grid cheque-stat-grid">
                     <div class="gasto-stat-card"><div class="label">⏳ Em aberto</div><div class="value dourado" id="chequeTotPend">R$ 0,00</div></div>
                     <div class="gasto-stat-card"><div class="label">📆 Cai esta semana</div><div class="value" id="chequeTot7">R$ 0,00</div></div>
-                    <div class="gasto-stat-card"><div class="label">⚠️ Já compensável</div><div class="value vermelho" id="chequeTotAtraso">R$ 0,00</div></div>
                     <div class="gasto-stat-card"><div class="label">✅ Compensado</div><div class="value" id="chequeTotRec">R$ 0,00</div></div>
-                    <div class="gasto-stat-card"><div class="label">🏦 Liberado p/ depósito</div><div class="value dourado" id="chequeTotLib">R$ 0,00</div></div>
-                    <div class="gasto-stat-card"><div class="label">↩️ Devolvido / sustado</div><div class="value vermelho" id="chequeTotDev">R$ 0,00</div></div>
                 </div>
 
                 <div id="chequeFormBox" style="background:var(--verde-claro);border-radius:12px;padding:16px;margin-bottom:20px;border:1px solid var(--borda);">
                     <div id="chequeFormTitulo" style="font-weight:700;color:var(--verde);font-size:16px;margin-bottom:12px;">➕ Novo Cheque</div>
                     <div class="row-3">
                         <div>
-                            <label>🔢 Nº do cheque</label>
-                            <input type="text" id="chequeNumero" placeholder="000123" maxlength="30">
+                            <label>🔢 Nº do pedido <span class="required">*</span></label>
+                            <input type="text" id="chequeNumero" placeholder="Ex.: 125" maxlength="30">
                         </div>
                         <div>
                             <label>💰 Valor (R$) <span class="required">*</span></label>
@@ -2830,8 +2712,13 @@
                     <div class="row">
                         <div>
                             <label>👤 Emitente / Cliente <span class="required">*</span></label>
-                            <input type="text" id="chequeEmitente" list="chequeClientes" placeholder="Nome de quem emitiu" maxlength="120">
-                            <datalist id="chequeClientes"></datalist>
+                            <div id="chequeEmitenteWrap" style="position:relative;">
+                                <input type="text" id="chequeEmitente" placeholder="Nome, CNPJ ou cidade do cliente" maxlength="120" autocomplete="off" style="padding-right:40px;" oninput="chequeEmitenteDigitou()" onfocus="chequeMostrarLista(false)">
+                                <span onclick="chequeAlternarLista()" style="position:absolute;right:0;top:0;height:100%;width:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--sub);font-size:12px;">▼</span>
+                                <input type="hidden" id="chequeClienteId" value="">
+                                <div id="chequeListaClientes" style="display:none;position:absolute;z-index:30;left:0;right:0;top:100%;margin-top:4px;max-height:260px;overflow-y:auto;background:#fff;border:1px solid var(--borda);border-radius:10px;box-shadow:var(--sombra-hover);"></div>
+                            </div>
+                            <div id="chequeClienteInfo" style="display:none;margin-top:8px;padding:10px 12px;background:#fff;border:1px solid var(--borda);border-radius:10px;font-size:13px;line-height:1.6;color:var(--texto-claro);"></div>
                         </div>
                         <div>
                             <label>⏱️ Prazo para cair na conta</label>
@@ -2842,10 +2729,6 @@
                                     <option value="c">dias corridos</option>
                                 </select>
                             </div>
-                        </div>
-                        <div>
-                            <label>🔗 Pedido nº (opcional)</label>
-                            <input type="number" id="chequePedido" placeholder="Ex.: 12" min="1" step="1">
                         </div>
                     </div>
                     <div class="btn-group">
@@ -2859,8 +2742,6 @@
                         <option value="aberto">⏳ Em aberto</option>
                         <option value="compensado">✅ Compensados</option>
                         <option value="inativo">🚫 Inativos</option>
-                        <option value="devolvido">↩️ Devolvidos</option>
-                        <option value="sustado">✋ Sustados</option>
                         <option value="all">📋 Todos</option>
                     </select>
                     <select id="chequeMes" onchange="carregarCheques()" style="max-width:240px;">
@@ -2870,211 +2751,21 @@
                 <div class="btn-group" style="margin-bottom:8px;">
                     <button class="btn btn-gold" onclick="gerarRelatorioChequesJPG()">📷 Relatório JPG</button>
                     <button class="btn btn-solid" onclick="abrirAntecipacao()">💸 Simular antecipação</button>
-                    <button class="btn btn-info" id="btnAvisosCheques" onclick="ativarAvisosCheques()" style="display:none;">🔔 Ativar avisos de depósito</button>
-                    <button class="btn btn-info" onclick="exportarChequesCSV()">📤 Exportar CSV</button>
-                    <button class="btn btn-success" onclick="document.getElementById('chequeFileCsv').click()">📥 Importar CSV</button>
-                    <input type="file" id="chequeFileCsv" accept=".csv,text/csv,text/plain" style="display:none;" onchange="importarChequesCSV(event)">
-                    <button class="btn btn-danger" onclick="apagarChequesCompensados()">🗑️ Apagar Compensados</button>
                 </div>
                 <p style="color:var(--sub);font-size:12px;margin-bottom:6px;">Os cheques são agrupados pelo <b>mês em que o dinheiro cai na conta</b> (considerando os dias úteis), mesmo que a data do cheque seja do mês anterior. O relatório JPG segue o mesmo filtro.</p>
                 <div id="listaCheques"></div>
             </div>
         </div>
 
-        <!-- ===== ADMIN ===== -->
-        <div class="section" id="tab-admin">
+        <!-- ===== RESERVA ===== -->
+        <div class="section" id="tab-reserva">
             <div class="card">
-                <div class="card-title">⚙️ <span style="color:var(--dourado);">Área Administrativa</span>
-                    <span class="badge-gold">🔒 Protegido</span>
+                <div class="card-title">💰 Reserva</div>
+                <p style="color:var(--sub);margin-bottom:12px;font-size:15px;">Cheques já compensados, separados por mês. Toque em <b>Reservar</b> para simular quanto guardar de cada um.</p>
+                <div class="row" style="margin-bottom:14px;">
+                    <div><label>📅 Mostrar cheques compensados de</label><select id="reservaMes" onchange="carregarReserva()"><option value="">Todos os meses</option></select></div>
                 </div>
-
-                <div style="margin-bottom:24px;">
-                    <h3 style="color:var(--verde);font-size:18px;margin-bottom:14px;">📊 Dashboard</h3>
-                    <div class="admin-stats-grid" id="adminStatsGrid">
-                        <div class="admin-stat-card">
-                            <div class="label">👥 Total Clientes</div>
-                            <div class="value" id="adminTotalClientes">0</div>
-                        </div>
-                        <div class="admin-stat-card">
-                            <div class="label">📦 Total Produtos</div>
-                            <div class="value" id="adminTotalProdutos">0</div>
-                        </div>
-                        <div class="admin-stat-card gold">
-                            <div class="label">💰 Total Vendas</div>
-                            <div class="value"><span class="moeda">R$</span> <span id="adminTotalVendas">0,00</span></div>
-                        </div>
-                        <div class="admin-stat-card gold">
-                            <div class="label">📊 Comissão Média</div>
-                            <div class="value"><span id="adminComissaoMedia">0,00</span>%</div>
-                        </div>
-                        <div class="admin-stat-card">
-                            <div class="label">📄 Total Pedidos</div>
-                            <div class="value" id="adminTotalPedidos">0</div>
-                        </div>
-                        <div class="admin-stat-card vermelho">
-                            <div class="label">🏙️ Cidades Atendidas</div>
-                            <div class="value" id="adminTotalCidades">0</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="margin-bottom:24px;">
-                    <div class="flex-between" style="margin-bottom:14px;">
-                        <h3 style="color:var(--verde);font-size:18px;">📍 Regiões de Atendimento</h3>
-                        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                            <button class="btn btn-sm btn-success" onclick="adicionarRegiao()">➕ Nova</button>
-                            <button class="btn btn-sm btn-info" onclick="importarRegioesPadrao()">📥 Importar Padrão</button>
-                        </div>
-                    </div>
-                    <div id="regioesContainer"></div>
-                </div>
-
-                <div style="margin-bottom:24px;">
-                    <div class="flex-between" style="margin-bottom:14px;">
-                        <h3 style="color:var(--verde);font-size:18px;">💰 Comissões</h3>
-                        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-                            <span style="font-size:13px;color:var(--sub);">📊 Comissão calculada como porcentagem do lucro sobre a venda</span>
-                            <button class="btn btn-sm btn-gold" onclick="imprimirComissoesPDF()">📄 PDF</button>
-                        </div>
-                    </div>
-                    <div id="comissaoContainer">
-                        <div class="empty-state"><div class="icon">💰</div><h3>Nenhum pedido finalizado</h3><p>Finalize pedidos para ver as comissões.</p></div>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="flex-between" style="margin-bottom:14px;">
-                        <h3 style="color:var(--verde);font-size:18px;">📦 Entregas</h3>
-                        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                            <button class="btn btn-sm btn-success" onclick="abrirModalEntrega()">📦 Nova Entrega</button>
-                            <button class="btn btn-sm btn-info" onclick="carregarEntregas()">🔄 Atualizar</button>
-                        </div>
-                    </div>
-                    <div id="entregasContainer">
-                        <div class="empty-state"><div class="icon">📦</div><h3>Nenhuma entrega arquivada</h3><p>Selecione pedidos e crie uma entrega.</p></div>
-                    </div>
-                </div>
-
-                <div id="editorProdutosAdmin" style="margin-top:24px;border-top:1px solid var(--borda);padding-top:16px;">
-                    <div class="flex-between" style="margin-bottom:14px;">
-                        <h3 style="color:var(--verde);font-size:18px;">📦 Editor de Produtos (Admin)</h3>
-                        <span style="font-size:12px;color:var(--sub);">Gerencie produtos e preços de custo</span>
-                    </div>
-                    <div id="adminProdutosList" style="max-height:400px;overflow-y:auto;border:1px solid var(--borda);border-radius:10px;padding:10px;background:#fafbfc;"></div>
-                </div>
-
-                <div id="tabelaCustoManual" style="margin-top:24px;border-top:1px solid var(--borda);padding-top:16px;">
-                    <div class="flex-between" style="margin-bottom:14px;">
-                        <h3 style="color:var(--verde);font-size:18px;">💰 Tabela de Custo</h3>
-                        <span style="font-size:12px;color:var(--sub);">Insira manualmente os custos</span>
-                    </div>
-                    <div class="tabela-custo-area">
-                        <p style="font-size:13px;color:var(--sub);margin-bottom:8px;">
-                            <strong>Formato:</strong> Código;Solado;Valor<br>
-                            <span style="font-size:12px;">Exemplo: 11;SEGURANÇA SOLA BOA;50.00</span>
-                        </p>
-                        <div class="exemplo-custo" id="exemploTabelaCusto">
-                            11;SEGURANÇA SOLA BOA;50.00
-                            2;JAU SOLA BORRACHA BARATA;41.87
-                            7;PVC 2 PIQ;49.11
-                        </div>
-                        <label>📄 Colar dados da tabela de custo:</label>
-                        <textarea id="tabelaCustoText" placeholder="Cole os dados no formato: Código;Solado;Valor" maxlength="50000"></textarea>
-                        <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
-                            <button class="btn btn-info" onclick="importarTabelaCusto()">📥 Importar Tabela</button>
-                            <button class="btn btn-danger" onclick="limparTabelaCusto()">🗑️ Limpar Tabela</button>
-                            <button class="btn btn-success" onclick="exportarTabelaCusto()">📤 Exportar</button>
-                        </div>
-                        <div id="tabelaCustoResult" style="margin-top:12px;"></div>
-                        <div style="margin-top:10px;font-size:12px;color:var(--sub);">
-                            <strong>Total de itens na tabela:</strong> <span id="tabelaCustoCount">0</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="resetarTudo" style="margin-top:24px;border-top:2px solid var(--vermelho);padding-top:16px;">
-                    <div class="card reset-card">
-                        <div class="card-title">
-                            🚨 <span style="color:var(--vermelho);">RESETAR SISTEMA</span>
-                            <span class="badge-danger">⚠️ PERIGO</span>
-                        </div>
-                        <div class="aviso-reset">
-                            <span class="icon-grande">⚠️</span>
-                            <strong>ATENÇÃO:</strong> Esta ação irá <strong>APAGAR TODOS OS DADOS</strong> do sistema permanentemente, incluindo:
-                            <ul style="margin:8px 0 0 20px;color:var(--sub);font-size:14px;">
-                                <li>👥 Todos os clientes cadastrados</li>
-                                <li>📦 Todos os produtos</li>
-                                <li>📄 Todos os pedidos (incluindo histórico)</li>
-                                <li>📍 Rota de visitas</li>
-                                <li>📍 Regiões de atendimento</li>
-                                <li>📦 Entregas</li>
-                                <li>💰 Tabela de custo</li>
-                            </ul>
-                            <p style="margin-top:10px;font-weight:700;color:var(--vermelho);">
-                                ⚡ Esta ação é <strong>IRREVERSÍVEL</strong> e não pode ser desfeita!
-                            </p>
-                            <p style="margin-top:6px;font-size:13px;color:var(--sub);">
-                                💡 Recomendamos fazer um <strong>backup</strong> antes de resetar.
-                            </p>
-                        </div>
-                        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">
-                            <button class="btn btn-info" onclick="exportarBackup()">💾 Fazer Backup</button>
-                            <button class="btn btn-danger" onclick="resetarTudo()" style="font-size:16px;padding:14px 30px;">
-                                🚨 RESETAR TUDO
-                            </button>
-                        </div>
-                        <div id="resetResult" style="margin-top:12px;"></div>
-                    </div>
-                </div>
-
-                <div id="financeiroAdmin" style="margin-top:24px;border-top:1px solid var(--borda);padding-top:16px;">
-                    <h3 style="color:var(--verde);font-size:18px;margin-bottom:10px;">📈 Financeiro</h3>
-                    <div class="row">
-                        <div>
-                            <label>Período</label>
-                            <select id="finPeriodo" onchange="carregarFinanceiro()">
-                                <option value="mes">Este mês</option>
-                                <option value="mesAnt">Mês passado</option>
-                                <option value="ano">Este ano</option>
-                                <option value="tudo">Tudo</option>
-                            </select>
-                        </div>
-                        <div></div>
-                    </div>
-                    <div class="admin-stats-grid" id="finResumo" style="margin-top:12px;"></div>
-                    <h4 style="margin:16px 0 6px;color:var(--verde);">📅 Últimos 6 meses</h4>
-                    <div id="finMeses"></div>
-                    <h4 style="margin:16px 0 6px;color:var(--verde);">🏆 Melhores clientes</h4>
-                    <div id="finClientes"></div>
-                    <h4 style="margin:16px 0 6px;color:var(--verde);">👟 Produtos mais vendidos</h4>
-                    <div id="finProdutos"></div>
-                    <h4 style="margin:16px 0 6px;color:var(--verde);">🧾 Controle de MEI (opcional)</h4>
-                    <div id="finMEI"></div>
-                </div>
-
-                <div id="dadosAdmin" style="margin-top:24px;border-top:1px solid var(--borda);padding-top:16px;">
-                    <h3 style="color:var(--verde);font-size:18px;margin-bottom:10px;">💾 Dados e backup</h3>
-                    <div id="dadosInfo"></div>
-                    <div class="btn-group">
-                        <button class="btn btn-solid btn-sm" onclick="exportarBackup()">💾 Baixar backup</button>
-                        <button class="btn btn-success btn-sm" onclick="compartilharBackup()">📤 Enviar backup (WhatsApp/Drive)</button>
-                        <button class="btn btn-info btn-sm" onclick="reduzirFotosAntigas()">🖼️ Reduzir fotos antigas</button>
-                    </div>
-                </div>
-
-                <div id="alterarSenhaAdmin" style="margin-top:24px;border-top:1px solid var(--borda);padding-top:16px;">
-                    <h3 style="color:var(--verde);font-size:18px;">🔑 Alterar Senhas</h3>
-                    <div id="avisoSenhaPadrao" style="display:none;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:12px;padding:12px 14px;margin:10px 0;font-weight:600;font-size:14px;">⚠️ Você ainda usa a senha padrão (9874). Qualquer pessoa que conheça o sistema consegue entrar. Troque abaixo.</div>
-                    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:8px;">
-                        <label>Nova Senha Admin:</label>
-                        <input type="password" id="novaSenhaAdmin" placeholder="Nova senha" style="width:150px;">
-                        <button class="btn btn-solid btn-sm" onclick="alterarSenhaAdmin()">Alterar Admin</button>
-                        <label style="margin-left:10px;">Nova Senha Valores:</label>
-                        <input type="password" id="novaSenhaValores" placeholder="Nova senha" style="width:150px;">
-                        <button class="btn btn-solid btn-sm" onclick="alterarSenhaValores()">Alterar Valores</button>
-                    </div>
-                    <div id="msgAlterarSenha" style="margin-top:6px;color:var(--verde);"></div>
-                </div>
+                <div id="reservaLista"></div>
             </div>
         </div>
 
@@ -3094,25 +2785,21 @@
             <span class="icon">📦</span>
             <span class="label">Produtos</span>
         </button>
-        <button data-tab="pedido">
-            <span class="icon">🛒</span>
-            <span class="label">Pedido</span>
-        </button>
-        <button data-tab="historico">
-            <span class="icon">📄</span>
-            <span class="label">Histórico</span>
-        </button>
         <button data-tab="rota">
             <span class="icon">📍</span>
-            <span class="label">Rota</span>
+            <span class="label">Cidades</span>
+        </button>
+        <button data-tab="gastos">
+            <span class="icon">💸</span>
+            <span class="label">Gastos</span>
         </button>
         <button data-tab="cheques">
             <span class="icon">🧾</span>
             <span class="label">Cheques</span>
         </button>
-        <button data-tab="admin" onclick="abrirAdmin()">
-            <span class="icon">⚙️</span>
-            <span class="label">Admin</span>
+        <button data-tab="reserva">
+            <span class="icon">💰</span>
+            <span class="label">Reserva</span>
         </button>
     </nav>
 
@@ -3169,7 +2856,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="row-full"><label>URL da Imagem</label><input type="url" id="prodImagem" placeholder="https://exemplo.com/botina.jpg" maxlength="500"></div>
+                <div class="row-full"><label>Valor de custo (R$)</label><input type="number" id="prodCusto" placeholder="Ex: 85,00" step="0.01" min="0" inputmode="decimal" oninput="validarPreco(this)"></div>
             </div>
             <div class="modal-actions">
                 <button class="btn btn-outline" onclick="fecharModal('modalProduto')">Cancelar</button>
@@ -3291,39 +2978,44 @@
     <div class="modal-overlay" id="modalAntecipacao">
         <div class="modal-box" style="max-width:680px;">
             <div class="modal-header"><h2>💸 Simular antecipação</h2><button class="close" onclick="fecharModal('modalAntecipacao')">&times;</button></div>
-            <p style="font-size:13px;color:var(--sub);margin-bottom:10px;">Informe a taxa do banco/factoring e veja quanto você recebe líquido de cada cheque em aberto. Desmarque os que não quer antecipar.</p>
+            <p style="font-size:13px;color:var(--sub);margin-bottom:10px;">Veja quanto você recebe líquido de cada cheque em aberto. Escolha todos os meses ou só um mês e desmarque os que não quer antecipar.</p>
             <div class="row">
-                <div><label>Taxa (% ao mês)</label><input type="number" id="antecTaxa" step="0.01" min="0" placeholder="Ex.: 3,5" oninput="renderizarAntecipacao()"></div>
-                <div><label>Tarifa por cheque (R$)</label><input type="number" id="antecTarifa" step="0.01" min="0" placeholder="0,00" oninput="renderizarAntecipacao()"></div>
+                <div><label>Taxa (% ao mês)</label><input type="number" id="antecTaxa" step="0.01" min="0" placeholder="5,1" oninput="renderizarAntecipacao()"></div>
+                <div><label>Cheques de</label><select id="antecMes" onchange="renderizarAntecipacao()"><option value="">Todos os meses</option></select></div>
             </div>
-            <div id="antecLista" style="margin-top:12px;"></div>
-            <p style="font-size:11px;color:var(--sub);margin-top:8px;">Cálculo: juros simples proporcionais aos dias corridos até o cheque cair na conta (taxa ÷ 30 × dias) + tarifa. Confirme as regras exatas com quem vai antecipar.</p>
+            <div id="antecLista" class="antec-lista"></div>
+            <p style="font-size:11px;color:var(--sub);margin-top:8px;">Taxa de 5,1% ao mês = 0,17% ao dia (5,1 ÷ 30). Os dias contam a partir da data do cheque (pré-datada), não do dia em que cai na conta. Com 30 dias ou mais paga 0,17% × dias; com menos de 30 dias paga sempre o mês cheio (5,1%).</p>
             <div class="modal-actions"><button class="btn btn-outline" onclick="fecharModal('modalAntecipacao')">Fechar</button></div>
         </div>
     </div>
 
-    <!-- MODAL REATIVAR CLIENTES -->
-    <div class="modal-overlay" id="modalReativar">
-        <div class="modal-box" style="max-width:680px;">
-            <div class="modal-header"><h2>📞 Reativar clientes</h2><button class="close" onclick="fecharModal('modalReativar')">&times;</button></div>
-            <div class="row">
-                <div><label>Sem comprar há</label>
-                    <select id="reativarDias" onchange="renderizarReativacao()">
-                        <option value="30">30 dias ou mais</option>
-                        <option value="60" selected>60 dias ou mais</option>
-                        <option value="90">90 dias ou mais</option>
-                        <option value="180">180 dias ou mais</option>
-                    </select></div>
-                <div><label>Cidade</label><select id="reativarCidade" onchange="renderizarReativacao()"><option value="">Todas</option></select></div>
+    <!-- MODAL EDITAR REGIÃO -->
+    <div class="modal-overlay" id="modalReserva">
+        <div class="modal-box" style="max-width:460px;">
+            <div class="modal-header"><h2>💰 Simular reserva</h2><button class="close" onclick="fecharModal('modalReserva')">&times;</button></div>
+            <div id="reservaInfo" style="margin-bottom:14px;color:var(--sub);font-size:14px;"></div>
+            <div style="text-align:center;margin-bottom:16px;">
+                <div style="font-size:13px;color:var(--sub);">Valor total do cheque</div>
+                <div id="reservaTotal" style="font-size:28px;font-weight:800;color:var(--verde);">R$ 0,00</div>
             </div>
-            <label style="margin-top:10px;">💬 Mensagem (use {nome} para o nome do cliente)</label>
-            <textarea id="reativarMsg" rows="3" oninput="salvarMsgReativar()"></textarea>
-            <div id="reativarLista" style="margin-top:12px;"></div>
-            <div class="modal-actions"><button class="btn btn-outline" onclick="fecharModal('modalReativar')">Fechar</button></div>
+            <label>Porcentagem a guardar: <b id="reservaPctTxt">10%</b></label>
+            <input type="range" id="reservaPct" class="reserva-range" min="10" max="100" step="1" value="10" oninput="reservaAtualizar()">
+            <div class="reserva-escala"><span>10%</span><span>100%</span></div>
+            <div class="reserva-chips">
+                <button type="button" onclick="reservaDefinir(10)">10%</button>
+                <button type="button" onclick="reservaDefinir(25)">25%</button>
+                <button type="button" onclick="reservaDefinir(50)">50%</button>
+                <button type="button" onclick="reservaDefinir(75)">75%</button>
+                <button type="button" onclick="reservaDefinir(100)">100%</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div style="background:var(--verde-claro);border-radius:12px;padding:14px;text-align:center;"><div style="font-size:12px;color:var(--sub);">💰 Guardar</div><div id="reservaGuardar" style="font-size:20px;font-weight:800;color:var(--verde);">R$ 0,00</div></div>
+                <div style="background:#f3f4f6;border-radius:12px;padding:14px;text-align:center;"><div style="font-size:12px;color:var(--sub);">✅ Fica com você</div><div id="reservaFica" style="font-size:20px;font-weight:800;">R$ 0,00</div></div>
+            </div>
+            <div class="modal-actions"><button class="btn btn-outline" onclick="fecharModal('modalReserva')">Fechar</button></div>
         </div>
     </div>
 
-    <!-- MODAL EDITAR REGIÃO -->
     <div class="modal-overlay" id="modalEditarRegiao">
         <div class="modal-box" style="max-width:600px;">
             <div class="modal-header"><h2>✏️ Editar Região</h2><button class="close" onclick="fecharModal('modalEditarRegiao')">&times;</button></div>
@@ -3840,7 +3532,7 @@
         let adminTabAnterior = null;
         let adminLiberado = false; // true somente durante a navegação feita após a senha correta
 
-        function abrirAdmin() {
+        function abrirAdmin() { return;
             if (!checkRateLimit('admin_login', 10, 60000)) return;
 
             const sections = document.querySelectorAll('.section');
@@ -4137,7 +3829,7 @@
         // NAVEGAÇÃO
         // ================================================================
         function navegar(tab) {
-            if (tab === 'admin' && !adminLiberado) { abrirAdmin(); return; }
+            if (!document.getElementById('tab-' + tab)) return;
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
 
             const target = document.getElementById('tab-' + tab);
@@ -4155,20 +3847,9 @@
                 dashboard: carregarDashboard,
                 clientes: renderizarClientes,
                 produtos: renderizarProdutos,
-                historico: renderizarHistorico,
-                rota: renderizarRota,
-                admin: carregarAdmin,
-                pedido: function() {
-                    carregarSelectProdutos();
-                    const dataInput = document.getElementById('pedidoData');
-                    if (dataInput) dataInput.value = hojeISO();
-                    setTimeout(iniciarAssinaturas, 300);
-                    const input = document.getElementById('numeroPedidoManual');
-                    if (input && !input.value) {
-                        atualizarSugestaoNumeroPedido();
-                    }
-                },
+                rota: carregarRegioes,
                 cheques: carregarCheques,
+                reserva: carregarReserva,
                 gastos: function() {
                     carregarGastos();
                     const dataInput = document.getElementById('gastoData');
@@ -4456,7 +4137,7 @@
             const c = getClientes().find(x => x.id === id);
             if (!c) return;
             if (!c.tel) { toast('Este cliente não tem telefone cadastrado.', 'warning'); return; }
-            abrirWhatsApp(c.tel, 'Olá, ' + nomeDoCliente(c) + '! Tudo bem?');
+            abrirWhatsApp(c.tel, MSG_WHATS_CLIENTE.split('{nome}').join(nomeDoCliente(c)));
         }
 
         function mapsCliente(id) {
@@ -4501,73 +4182,8 @@
             }
         }
 
-        // ----- clientes que sumiram -----
-        const MSG_REATIVAR_PADRAO = 'Olá, {nome}! Tudo bem? Aqui é o Aristóteles, da Aristóteles Botinas. Faz um tempinho que não conversamos — posso te passar as novidades e as condições da semana? 🥾';
-
-        function ultimasComprasPorCliente() {
-            const mapa = {};
-            getDB('pedidos').forEach(p => {
-                if (!p || p.status !== 'Finalizado' || !p.idCliente || !p.data) return;
-                const m = mapa[p.idCliente] || (mapa[p.idCliente] = { data: '', total: 0, qtd: 0 });
-                if (p.data > m.data) m.data = p.data;
-                m.total += (p.total || 0);
-                m.qtd++;
-            });
-            return mapa;
-        }
-
-        function diasDesdeData(iso) {
-            const p = String(iso).split('-').map(Number);
-            const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
-            return Math.round((hoje - new Date(p[0], p[1] - 1, p[2])) / 864e5);
-        }
-
-        function clientesParaReativar(minDias, cidade) {
-            const compras = ultimasComprasPorCliente();
-            return getClientes()
-                .filter(c => compras[c.id] && (!cidade || normalizarTexto(c.cidade) === normalizarTexto(cidade)))
-                .map(c => ({ c: c, ult: compras[c.id], dias: diasDesdeData(compras[c.id].data) }))
-                .filter(x => x.dias >= minDias)
-                .sort((a, b) => b.dias - a.dias);
-        }
-
-        function abrirReativacao() {
-            const sel = document.getElementById('reativarCidade');
-            const cidades = Array.from(new Set(getClientes().map(c => (c.cidade || '').trim()).filter(Boolean))).sort((a, b) => a.localeCompare(b));
-            sel.innerHTML = '<option value="">Todas</option>' + cidades.map(c => '<option value="' + escAttr(c) + '">' + sanitizar(c) + '</option>').join('');
-            document.getElementById('reativarMsg').value = localStorage.getItem('msgReativar') || MSG_REATIVAR_PADRAO;
-            renderizarReativacao();
-            document.getElementById('modalReativar').classList.add('show');
-        }
-
-        function salvarMsgReativar() {
-            try { localStorage.setItem('msgReativar', document.getElementById('reativarMsg').value); } catch (e) {}
-        }
-
-        function renderizarReativacao() {
-            const dias = parseInt(document.getElementById('reativarDias').value) || 60;
-            const cidade = document.getElementById('reativarCidade').value;
-            const lista = clientesParaReativar(dias, cidade);
-            const box = document.getElementById('reativarLista');
-            if (!lista.length) { box.innerHTML = '<div class="empty-state"><div class="icon">🎉</div><h3>Ninguém sumido</h3><p>Todos os clientes compraram nos últimos ' + dias + ' dias.</p></div>'; return; }
-            let html = '<p style="font-size:13px;color:var(--sub);margin-bottom:8px;"><b>' + lista.length + '</b> cliente(s) sem comprar há ' + dias + '+ dias:</p>';
-            lista.slice(0, 100).forEach(x => {
-                html += '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--borda);">' +
-                    '<div style="min-width:0;"><strong>' + sanitizarHTML(nomeDoCliente(x.c)) + '</strong>' +
-                    '<div style="font-size:12px;color:var(--sub);">' + sanitizarHTML(x.c.cidade || '-') + ' · última compra ' + formatarDataBR(x.ult.data) + ' (' + x.dias + ' dias) · ' + x.ult.qtd + ' pedido(s) · R$ ' + x.ult.total.toFixed(2) + '</div></div>' +
-                    '<button class="btn btn-sm btn-success" onclick="whatsReativar(\'' + x.c.id + '\')">💬 Chamar</button></div>';
-            });
-            if (lista.length > 100) html += '<p style="font-size:12px;color:var(--sub);margin-top:8px;">Mostrando os 100 mais antigos. Filtre por cidade para ver os demais.</p>';
-            box.innerHTML = html;
-        }
-
-        function whatsReativar(id) {
-            const c = getClientes().find(x => x.id === id);
-            if (!c) return;
-            if (!c.tel) { toast('Este cliente não tem telefone cadastrado.', 'warning'); return; }
-            const modelo = document.getElementById('reativarMsg').value || MSG_REATIVAR_PADRAO;
-            abrirWhatsApp(c.tel, modelo.split('{nome}').join(nomeDoCliente(c)));
-        }
+        // ----- mensagem padrão do WhatsApp (enviada individualmente, com o nome de cada cliente) -----
+        const MSG_WHATS_CLIENTE = 'Olá, {nome}! Tudo bem? Aqui é o Aristóteles, da Aristóteles Botinas. Faz um tempinho que não conversamos — posso te passar as novidades e as condições da semana? 🥾';
 
         // ----- pedido mais rápido -----
         function ultimoPedidoCliente(idCliente) {
@@ -4776,68 +4392,39 @@
             return linhas;
         }
 
-        function montarAvisosPainel(qtdSemPedido) {
+        function montarAvisosPainel() {
             const linhas = [];
             const lib = chequesLiberadosParaDeposito();
             if (lib.length) linhas.push('🏦 <strong>' + lib.length + '</strong> cheque(s) liberado(s) para depósito — <strong>' + brl(lib.reduce((s, c) => s + c.valor, 0)) + '</strong> <button class="btn btn-sm btn-gold" onclick="navegar(\'cheques\')">Ver cheques</button>');
             const devs = getCheques().filter(c => chequeEhProblema(chequeStatus(c)));
-            if (devs.length) linhas.push('↩️ <strong>' + devs.length + '</strong> cheque(s) devolvido(s)/sustado(s) — <strong>' + brl(devs.reduce((s, c) => s + c.valor, 0)) + '</strong> a resolver. <button class="btn btn-sm btn-info" onclick="document.getElementById(\'chequeFiltro\').value=\'devolvido\';navegar(\'cheques\')">Ver</button>');
-            if (usaMEI()) {
-                const mei = calcularMEI();
-                if (mei.pct >= 100) linhas.push('🚨 Faturamento de ' + mei.ano + ' passou do limite do MEI (' + brl(mei.fat) + ' de ' + brl(mei.lim) + '). Fale com um contador.');
-                else if (mei.pct >= 80) linhas.push('⚠️ Você já usou <strong>' + mei.pct.toFixed(0) + '%</strong> do limite anual do MEI (' + brl(mei.fat) + ' de ' + brl(mei.lim) + ').');
-                avisosFiscaisMEI().forEach(l => linhas.push(l));
-            }
-            const ub = parseInt(localStorage.getItem('ultimoBackup') || '0');
-            const diasBk = ub ? Math.floor((Date.now() - ub) / 864e5) : null;
-            if (diasBk === null || diasBk >= 7) linhas.push('💾 ' + (diasBk === null ? 'Você ainda não fez backup.' : 'Último backup há <strong>' + diasBk + ' dias</strong>.') + ' Seus dados ficam só neste aparelho. <button class="btn btn-sm btn-success" onclick="compartilharBackup()">📤 Enviar backup</button><button class="btn btn-sm btn-solid" onclick="exportarBackup()">💾 Baixar</button>');
-            const uso = usoArmazenamento();
-            if (uso.pct >= 70) linhas.push('📦 O espaço do aparelho está <strong>' + uso.pct.toFixed(0) + '%</strong> cheio. <button class="btn btn-sm btn-info" onclick="reduzirFotosAntigas()">🖼️ Reduzir fotos antigas</button>');
-            const sumidos = clientesParaReativar(60, '').length;
-            if (sumidos) linhas.push('📞 <strong>' + sumidos + '</strong> cliente(s) sem comprar há 60+ dias. <button class="btn btn-sm btn-success" onclick="abrirReativacao()">Chamar no WhatsApp</button>');
-            if (qtdSemPedido > 0) linhas.push('⚠️ <strong>' + qtdSemPedido + '</strong> cliente(s) sem pedido finalizado. <button class="btn btn-sm btn-info" onclick="navegar(\'clientes\')">Ver clientes</button>');
-            if (!linhas.length) linhas.push('✅ Tudo em dia. Todos os clientes cadastrados já possuem pedidos.');
+            if (devs.length) linhas.push('↩️ <strong>' + devs.length + '</strong> cheque(s) devolvido(s)/sustado(s) — <strong>' + brl(devs.reduce((s, c) => s + c.valor, 0)) + '</strong> a resolver. <button class="btn btn-sm btn-info" onclick="navegar(\'cheques\')">Ver cheques</button>');
+            // teto de gastos: R$ 700 por semana (segunda a domingo) e R$ 2.500 por mês
+            const LIM_SEM = 700, LIM_MES = 2500;
+            const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+            const ini = new Date(hoje); ini.setDate(ini.getDate() - ((hoje.getDay() + 6) % 7));
+            const fim = new Date(ini); fim.setDate(fim.getDate() + 6);
+            const iniS = dataLocalISO(ini), fimS = dataLocalISO(fim), mesS = hojeISO().slice(0, 7);
+            let sem = 0, mes = 0;
+            getGastos().forEach(g => {
+                const d = String(g.data || ''), v = parseFloat(g.valor) || 0;
+                if (d >= iniS && d <= fimS) sem += v;
+                if (d.slice(0, 7) === mesS) mes += v;
+            });
+            if (sem > LIM_SEM) linhas.push('🚨 Gastos da <strong>semana</strong> passaram do teto: <strong>' + brl(sem) + '</strong> de ' + brl(LIM_SEM) + ' (excedeu ' + brl(sem - LIM_SEM) + '). <button class="btn btn-sm btn-warning" onclick="navegar(\'gastos\')">Ver gastos</button>');
+            if (mes > LIM_MES) linhas.push('🚨 Gastos do <strong>mês</strong> passaram do teto: <strong>' + brl(mes) + '</strong> de ' + brl(LIM_MES) + ' (excedeu ' + brl(mes - LIM_MES) + '). <button class="btn btn-sm btn-warning" onclick="navegar(\'gastos\')">Ver gastos</button>');
+            if (!linhas.length) linhas.push('✅ Tudo em dia.');
             return linhas.map(l => '<div class="aviso-linha">' + l + '</div>').join('');
         }
 
         function carregarDashboard() {
             try {
-                const pedidos = getDB('pedidos');
-                const hoje = hojeISO();
-                const pedidosHoje = pedidos.filter(p => p.data === hoje && p.status === 'Finalizado');
-                const totalVendas = pedidosHoje.reduce((s, p) => s + (p.total || 0), 0);
-
-                const statVendas = document.getElementById('statVendas');
-                const statPedidos = document.getElementById('statPedidos');
-                const statRota = document.getElementById('statRota');
                 const statDataAtual = document.getElementById('statDataAtual');
-
-                if (statVendas) statVendas.textContent = totalVendas.toFixed(2);
-                if (statPedidos) statPedidos.textContent = pedidosHoje.length;
-                if (statRota) {
-                    // mesma regra da aba Rota: clientes que fecharam pedido hoje
-                    const existentes = new Set(getClientes().map(c => c.id));
-                    const rotaHoje = new Set(pedidosHoje.map(p => p.idCliente).filter(id => existentes.has(id)));
-                    statRota.textContent = rotaHoje.size;
-                }
-
                 if (statDataAtual) {
                     const agora = new Date();
-                    const dia = String(agora.getDate()).padStart(2, '0');
-                    const mes = String(agora.getMonth() + 1).padStart(2, '0');
-                    statDataAtual.textContent = `${dia}/${mes}`;
+                    statDataAtual.textContent = String(agora.getDate()).padStart(2, '0') + '/' + String(agora.getMonth() + 1).padStart(2, '0');
                 }
-
-                const clientes = getClientes();
-                const comPedido = new Set(pedidos.filter(p => p.status === 'Finalizado').map(p => p.idCliente));
-                const semPedido = clientes.filter(c => !comPedido.has(c.id));
                 const avisos = document.getElementById('avisosPainel');
-                if (avisos) {
-                    avisos.innerHTML = montarAvisosPainel(semPedido.length);
-                    senhaPadraoEmUso().then(emUso => {
-                        if (emUso && !avisos.querySelector('[data-senha]')) avisos.insertAdjacentHTML('afterbegin', '<div class="aviso-linha" data-senha="1">🔐 Você ainda usa a senha padrão do Admin/Valores. <button class="btn btn-sm btn-danger" onclick="abrirAdmin()">Trocar agora</button></div>');
-                    });
-                }
+                if (avisos) avisos.innerHTML = montarAvisosPainel();
             } catch (e) {
                 console.error('Erro ao carregar dashboard:', e);
             }
@@ -4883,17 +4470,13 @@
                 }
 
                 let html =
-                `<div class="table-wrap"><table><tr><th>Fantasia</th><th>Cidade</th><th>Telefone</th><th>Total Gasto</th><th>Ações</th></tr>`;
-                const pedidos = getDB('pedidos');
+                `<div class="table-wrap"><table><tr><th>Fantasia</th><th>Cidade</th><th>Telefone</th><th>Ações</th></tr>`;
                 filtrados.slice(0, 50).forEach(c => {
-                    const peds = pedidos.filter(p => p.idCliente === c.id && p.status === 'Finalizado');
-                    const total = peds.reduce((s, p) => s + (p.total || 0), 0);
                     html += `
                         <tr>
                             <td><strong>${sanitizarHTML(c.fantasia || c.razao || '-')}</strong></td>
                             <td>${sanitizarHTML(c.cidade || '-')}</td>
                             <td>${sanitizarHTML(c.tel || '-')}</td>
-                            <td><strong style="color:#10b981;">R$ ${total.toFixed(2)}</strong></td>
                             <td>
                                 <div class="acoes">
                                     <button class="btn-ver" onclick="verDetalhesCliente('${c.id}')">📋</button>
@@ -5103,12 +4686,13 @@
                 document.getElementById('prodCodigo').value = d.codigo || '';
                 document.getElementById('prodSolado').value = d.solado || '';
                 document.getElementById('prodTamanhos').value = (d.tamanhos || []).join(', ');
-                document.getElementById('prodImagem').value = d.imagem || '';
+                const cst = Number(getCustoProduto(d.codigo, d.solado)) || Number(d.custo) || 0;
+                document.getElementById('prodCusto').value = cst > 0 ? cst : '';
             } else {
                 if (title) title.textContent = '📦 Novo Produto';
                 if (editId) editId.value = '';
                 document.querySelectorAll('#modalProduto input').forEach(i => {
-                    if (i && i.id !== 'prodImagem') i.value = '';
+                    if (i && i.type !== 'hidden') i.value = '';
                 });
             }
             modal.classList.add('show');
@@ -5120,7 +4704,7 @@
             const editId = document.getElementById('produtoEditId').value;
             const codigo = document.getElementById('prodCodigo').value.trim();
             let solado = document.getElementById('prodSolado').value.trim();
-            const imagem = document.getElementById('prodImagem').value.trim();
+            const custo = parseFloat(String(document.getElementById('prodCusto').value).replace(',', '.')) || 0;
             const tamanhosInput = document.getElementById('prodTamanhos').value.trim();
 
             if (!codigo) { toast('Código do produto é obrigatório.', 'error'); return; }
@@ -5128,10 +4712,7 @@
                 toast('Código deve conter apenas números!', 'error');
                 return;
             }
-            if (imagem && !isValidURL(imagem)) {
-                toast('URL da imagem inválida!', 'error');
-                return;
-            }
+            if (custo < 0) { toast('O custo não pode ser negativo!', 'error'); return; }
 
             const resultado = converterGrade(tamanhosInput);
             let tamanhos = resultado.tamanhos;
@@ -5161,7 +4742,7 @@
                 return;
             }
 
-            const dados = { codigo, solado, imagem, tamanhos };
+            const dados = { codigo, solado, tamanhos, custo };
             const produtos = getProdutos();
 
             const duplicado = produtos.some(p =>
@@ -5173,6 +4754,13 @@
             if (duplicado) {
                 toast('Produto com este código e solado já existe!', 'error');
                 return;
+            }
+
+            if (custo > 0) {
+                const tabelaCusto = getTabelaCusto();
+                if (!tabelaCusto[codigo]) tabelaCusto[codigo] = {};
+                tabelaCusto[codigo][solado || 'Padrão'] = custo;
+                setTabelaCusto(tabelaCusto);
             }
 
             if (editId) {
@@ -5261,14 +4849,16 @@
                 }
 
                 let html =
-                    `<div class="table-wrap"><table><tr><th>Código</th><th>Solado</th><th>Grade</th><th>Imagem</th><th>Ações</th></tr>`;
+                    `<div class="table-wrap"><table><tr><th>Código</th><th>Solado</th><th>Grade</th><th>Custo</th><th>Imagem</th><th>Ações</th></tr>`;
                 filtrados.forEach(p => {
                     const gradeStr = (p.tamanhos || []).join(', ');
+                    const cst = Number(getCustoProduto(p.codigo, p.solado)) || 0;
                     html += `
                         <tr>
                             <td><strong>${sanitizarHTML(p.codigo)}</strong></td>
                             <td>${sanitizarHTML(p.solado || '-')}</td>
                             <td>${sanitizarHTML(gradeStr)}</td>
+                            <td><strong>${cst > 0 ? 'R$ ' + cst.toFixed(2).replace('.', ',') : '-'}</strong></td>
                             <td>${p.imagem ? '✅' : '-'}</td>
                             <td><div class="acoes"><button class="btn-editar" onclick="editarProduto('${p.id}')">✏️</button><button class="btn-excluir" onclick="excluirProduto('${p.id}')">🗑️</button></div></td>
                         </tr>
@@ -5285,7 +4875,7 @@
         // ================================================================
         // ADMIN - CARREGAR
         // ================================================================
-        function carregarAdmin() {
+        function carregarAdmin() { carregarRegioes(); return;
             try {
                 const clientes = getClientes() || [];
                 const produtos = getProdutos() || [];
@@ -5360,6 +4950,7 @@
 
             produtos.forEach(p => {
                 const gradeStr = (p.tamanhos || []).join(', ');
+                    const cst = Number(getCustoProduto(p.codigo, p.solado)) || 0;
                 const custo = p.custo || getCustoProduto(p.codigo, p.solado) || 0;
                 html += `
                     <tr>
@@ -5489,42 +5080,30 @@
         // RESETAR TUDO
         // ================================================================
         function resetarTudo() {
-            if (!checkRateLimit('resetar_tudo', 1, 60000)) return;
+            if (!checkRateLimit('resetar_tudo', 3, 60000)) return;
 
-            const clientes = getClientes();
-            const produtos = getProdutos();
-            const pedidos = getDB('pedidos');
-            const rota = getRotaAtivos();
-            const regioes = getRegioes();
-            const entregas = getEntregas();
-            const tabelaCusto = getTabelaCusto();
-            const gastos = getGastos();
-
-            const totalItems = clientes.length + produtos.length + pedidos.length + rota.length + regioes.length + entregas
-                .length + Object.keys(tabelaCusto).length + gastos.length;
+            const contagem = {
+                clientes: getClientes().length,
+                produtos: getProdutos().length,
+                pedidos: getDB('pedidos').length,
+                rota: getRotaAtivos().length,
+                regioes: getRegioes().length,
+                entregas: getEntregas().length,
+                gastos: getGastos().length,
+                cheques: getCheques().length,
+                custos: Object.keys(getTabelaCusto()).length
+            };
+            const totalItems = Object.keys(contagem).reduce((s, k) => s + contagem[k], 0);
 
             if (totalItems === 0) {
                 toast('Não há dados para resetar. O sistema já está vazio.', 'info');
                 return;
             }
 
-            const resultDiv = document.getElementById('resetResult');
-
-            if (!confirm(`⚠️ ATENÇÃO! Você está prestes a RESETAR TODOS OS DADOS.\n\nTotal de itens a serem apagados: ${totalItems}\n\n- ${clientes.length} clientes\n- ${produtos.length} produtos\n- ${pedidos.length} pedidos\n- ${rota.length} clientes na rota\n- ${regioes.length} regiões\n- ${entregas.length} entregas\n- ${gastos.length} gastos\n\nEsta ação é IRREVERSÍVEL!\n\nDeseja continuar?`)) {
-                resultDiv.innerHTML = '<span style="color:var(--sub);">Operação cancelada.</span>';
-                return;
-            }
-
-            if (!confirm('🔄 ÚLTIMA CHANCE! Tem certeza absoluta que deseja resetar tudo?\n\nNa próxima tela você precisará digitar RESETAR para confirmar.')) {
-                resultDiv.innerHTML = '<span style="color:var(--sub);">Operação cancelada.</span>';
-                return;
-            }
-
+            if (!confirm(`⚠️ ATENÇÃO! Você vai RESETAR TODOS OS DADOS.\n\n- ${contagem.clientes} clientes\n- ${contagem.produtos} produtos\n- ${contagem.pedidos} pedidos\n- ${contagem.regioes} regiões\n- ${contagem.entregas} entregas\n- ${contagem.gastos} gastos\n- ${contagem.cheques} cheques\n- ${contagem.custos} itens da tabela de custo\n\nEsta ação é IRREVERSÍVEL! Se ainda não fez, use "Backup JSON" antes.\n\nDeseja continuar?`)) return;
+            if (!confirm('🔄 ÚLTIMA CHANCE! Tem certeza absoluta que deseja resetar tudo?\n\nNa próxima tela você precisará digitar RESETAR para confirmar.')) return;
             const confirmacao = prompt('Digite "RESETAR" para confirmar a exclusão total de todos os dados:');
-            if (confirmacao !== 'RESETAR') {
-                resultDiv.innerHTML = '<span style="color:var(--vermelho);">❌ Operação cancelada. Texto de confirmação incorreto.</span>';
-                return;
-            }
+            if (confirmacao !== 'RESETAR') { toast('Operação cancelada. Texto de confirmação incorreto.', 'info'); return; }
 
             try {
                 setClientes([]);
@@ -5535,21 +5114,10 @@
                 setDBObject('entregas', { lista: [] });
                 setTabelaCusto({});
                 setDB('gastos', []);
-                localStorage.removeItem('sequencialPedido');
-                localStorage.removeItem('foto_pedido_temporaria');
-                localStorage.removeItem('foto_pedido_data');
+                setCheques([]);
+                ['sequencialPedido', 'foto_pedido_temporaria', 'foto_pedido_data', 'tgChequesEnviados', 'chequesAvisados'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
 
-                document.querySelectorAll('.valor-oculto.visivel').forEach(el => {
-                    ocultarValor(el.id);
-                });
-
-                resultDiv.innerHTML = `
-                    <div style="background:#e8f5ee;padding:14px;border-radius:10px;border-left:4px solid var(--verde);">
-                        <strong style="color:var(--verde);">✅ SISTEMA RESETADO COM SUCESSO!</strong>
-                        <br><span style="color:var(--sub);">Todos os dados foram apagados permanentemente.</span>
-                        <br><span style="font-size:12px;color:var(--sub);">${new Date().toLocaleString('pt-BR')}</span>
-                    </div>
-                `;
+                document.querySelectorAll('.valor-oculto.visivel').forEach(el => { ocultarValor(el.id); });
 
                 toast('🚨 Todos os dados foram resetados!', 'warning');
 
@@ -5562,20 +5130,21 @@
                 carregarAdmin();
                 carregarTabelaCustoUI();
                 carregarGastos();
+                carregarCheques();
+                carregarReserva();
 
                 const buscaCliente = document.getElementById('buscaClientePedido');
                 if (buscaCliente) buscaCliente.value = '';
                 const clienteInfo = document.getElementById('clienteSelecionadoInfo');
                 if (clienteInfo) clienteInfo.classList.remove('visible');
-                document.getElementById('clientePedidoId').value = '';
+                const hid = document.getElementById('clientePedidoId');
+                if (hid) hid.value = '';
                 itensPedido = [];
                 renderizarTabelaPedido();
                 calcularTotaisPedido();
-
             } catch (e) {
                 console.error('Erro ao resetar:', e);
-                resultDiv.innerHTML = `<span style="color:var(--vermelho);">❌ Erro ao resetar: ${e.message}</span>`;
-                toast('Erro ao resetar o sistema.', 'error');
+                toast('Erro ao resetar o sistema: ' + e.message, 'error');
             }
         }
 
@@ -7506,13 +7075,9 @@ function renderizarRota() {
         function verDetalhesCliente(id) {
             const cliente = getClientes().find(c => c.id === id);
             if (!cliente) return;
-            const pedidos = getDB('pedidos');
-            const pedidosCliente = pedidos.filter(p => p.idCliente === id && p.status === 'Finalizado');
-            const totalGasto = pedidosCliente.reduce((s, p) => s + (p.total || 0), 0);
-
             let html = `
                 <div class="cliente-detalhes">
-                    <div class="header"><h2>🏪 ${sanitizarHTML(cliente.fantasia || cliente.razao)}</h2><span class="total-gasto">R$ ${totalGasto.toFixed(2)}</span></div>
+                    <div class="header"><h2>🏪 ${sanitizarHTML(cliente.fantasia || cliente.razao)}</h2></div>
                     <div class="grid-info">
                         <div class="info-item"><span class="label">Razão Social</span><div class="value"><strong>${sanitizarHTML(cliente.razao || '-')}</strong></div></div>
                         <div class="info-item"><span class="label">CNPJ</span><div class="value">${sanitizarHTML(cliente.cnpj || '-')}</div></div>
@@ -7526,31 +7091,9 @@ function renderizarRota() {
                     <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px;">
                         <button class="btn btn-sm btn-success" onclick="whatsCliente('${cliente.id}')">💬 WhatsApp</button>
                         <button class="btn btn-sm btn-info" onclick="mapsCliente('${cliente.id}')">🗺️ Maps</button>
-                        <button class="btn btn-sm btn-solid" onclick="repetirUltimoPedido('${cliente.id}')">🔁 Repetir último pedido</button>
                     </div>
                     ${blocoChequesCliente(cliente)}
-                    <h4 style="margin:14px 0 6px;">📦 Pedidos (${pedidosCliente.length})</h4>`;
-            if (pedidosCliente.length === 0) {
-                html += `<p style="color:var(--sub);">Nenhum pedido finalizado.</p>`;
-            } else {
-                pedidosCliente.reverse().forEach(p => {
-                    const qtd = p.itens ? p.itens.reduce((s, i) => s + (i.qtd || 0), 0) : 0;
-                    html += `
-                        <div class="pedido-item">
-                            <div class="top"><span class="id">#${String(p.id).padStart(3,'0')}</span><span class="total">R$ ${(p.total || 0).toFixed(2)}</span></div>
-                            <div class="detalhes">📅 ${formatarDataBR(p.data)} | 📦 ${qtd} pares</div>
-                            ${p.foto ? `<div style="margin-top:4px;"><img src="${p.foto}" style="width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid var(--borda);cursor:pointer;" onclick="abrirFotoPedidoId(${p.id})"></div>` : ''}
-                            <div class="actions">
-                                ${p.entregue ? '<span style="font-size:12px;color:#1e40af;font-weight:700;align-self:center;">📦 Entregue</span>' : `<button class="btn btn-sm btn-editar-pedido" onclick="abrirEditarPedido(${p.id})">✏️</button>`}
-                                <button class="btn btn-sm btn-imprimir-pdf" onclick="imprimirPDFPedido(${p.id})">📄</button>
-                                <button class="btn btn-sm btn-success" onclick="compartilharPedidoWhatsApp(${p.id})">💬</button>
-                                ${p.entregue ? '' : `<button class="btn btn-sm btn-excluir" onclick="excluirPedido(${p.id})">🗑️</button>`}
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-            html += `</div>`;
+                </div>`;
             const content = document.getElementById('detalhesClienteContent');
             if (content) content.innerHTML = html;
             document.getElementById('modalDetalhesCliente').classList.add('show');
@@ -7559,40 +7102,6 @@ function renderizarRota() {
         // ================================================================
         // REGIÕES - CORREÇÃO COMPLETA
         // ================================================================
-        const REGIOES_PADRAO = [
-            { nome: 'Giro 1 - Inhapim', cidades: ['Caratinga', 'Inhapim', 'Santo Antonio', 'Sao Domingos das Dores',
-                    'Sao Sebastiao do Anta', 'Dom Cavati', 'Sao Joao do Oriente', 'Iapu', 'Bugre', 'Ipaba',
-                    'Vale Verde'
-                ], combustivel: 0 },
-            { nome: 'Giro 2 - Tarumirim', cidades: ['Caratinga', 'Tarumirim', 'Cafe Mirim', 'Alvarenga', 'Itanhomi',
-                    'Capitao Andrade', 'Sao Geraldo', 'Tumiritinga', 'Era Nova', 'Alpercata', 'Engenheiro Caldas',
-                    'Sobralia', 'Fernandes Tourinho'
-                ], combustivel: 0 },
-            { nome: 'Giro 3 - Sardoa', cidades: ['Caratinga', 'Sardoa', 'Gonzaga', 'Divinolandia', 'Virginopolis',
-                    'Guanhaes', 'Sao Joao Evangelista', 'Sao Pedro do Suacui', 'Santa Maria do Suacui', 'Agua Boa',
-                    'Capelinha'
-                ], combustivel: 0 },
-            { nome: 'Giro 4 - Santa Luzia', cidades: ['Caratinga', 'Santa Luzia', 'Santa Rita', 'Santana do Tabuleiro',
-                    'Santa Barbara', 'Sao Simao', 'Dom Correa', 'Vermelho Novo', 'Sacramento', 'Vila de Fatima',
-                    'Sao Pedro do Avai', 'Caputira', 'Vila Nova'
-                ], combustivel: 0 },
-            { nome: 'Giro 5 - Realeza', cidades: ['Caratinga', 'Realeza', 'Santo Amaro', 'Santa Margarida', 'Matipo',
-                    'Padre Fialho', 'Abre Campo', 'Sericita', 'Rio Casca', 'Sao Pedro dos Ferros', 'Raul Soares',
-                    'Vermelho Velho', 'Bom Jesus do Galho', 'Sapucaia'
-                ], combustivel: 0 },
-            { nome: 'Giro 6 - Sao Joao do Manhuacu', cidades: ['Caratinga', 'Sao Joao do Manhuacu', 'Orizania',
-                    'Pedra Bonita', 'Divino', 'Carangola', 'Fervedouro', 'Sao Francisco do Gloria', 'Miradouro'
-                ], combustivel: 0 },
-            { nome: 'Giro 7 - Ponte Nova/Vicosa', cidades: ['Caratinga', 'Piedade de Ponte Nova',
-                    'Santa Cruz do Escalvado', 'Santo Antonio do Grama', 'Urucania', 'Jequiri', 'Amparo do Serra',
-                    'Piao', 'Ponte Nova', 'Guaraciaba', 'Pedra do Anta', 'Teixeiras', 'Vicosa', 'Cachoeira',
-                    'Sao Miguel do Anta', 'Araponga', 'Ervalia', 'Coimbra', 'Visconde do Rio Branco'
-                ], combustivel: 0 },
-            { nome: 'Giro 9 - Santa Efigenia', cidades: ['Caratinga', 'Dom Lara', 'Dom Modesto', 'Santa Efigenia',
-                    'Entre Folhas', 'Vargem Alegre', 'Cordeiro de Minas', 'Sao Candido'
-                ], combustivel: 0 }
-        ];
-
         function getRegioes() {
             try {
                 const obj = getDBObject('regioes');
@@ -7606,14 +7115,6 @@ function renderizarRota() {
                 setDBObject('regioes', { lista: Array.isArray(lista) ? lista : [] });
                 return true;
             } catch (e) { return false; }
-        }
-
-        function importarRegioesPadrao() {
-            if (!checkRateLimit('importar_regioes', 2, 30000)) return;
-            if (!confirm('Importar as 8 regiões padrão? As regiões existentes serão substituídas.')) return;
-            setRegioes(REGIOES_PADRAO);
-            toast('Regiões importadas com sucesso!', 'success');
-            carregarAdmin();
         }
 
         function adicionarRegiao() {
@@ -7706,7 +7207,7 @@ function renderizarRota() {
 
                 if (regioes.length === 0) {
                     container.innerHTML =
-                        `<div class="empty-state"><div class="icon">📍</div><h3>Nenhuma região cadastrada</h3><p>Clique em "Nova Região" ou "Importar Padrão" para começar.</p></div>`;
+                        `<div class="empty-state"><div class="icon">📍</div><h3>Nenhuma região cadastrada</h3><p>Clique em "Nova" para cadastrar a primeira região ou importe seu backup .json.</p></div>`;
                     return;
                 }
 
@@ -8512,7 +8013,8 @@ function renderizarRota() {
                         gasolina: 'Gasolina',
                         farmacia: 'Farmácia',
                         mercado: 'Mercado',
-                        oficina: 'Oficina'
+                        oficina: 'Oficina',
+                outros: 'Outros'
                     };
                     const catLabel = catLabels[g.categoria] || g.categoria || 'Outro';
                     gastosHtml += `
@@ -9148,7 +8650,7 @@ function renderizarRota() {
             renderizarHistorico();
         }
 
-        function carregarDadosAdmin() {
+        function carregarDadosAdmin() { return;
             const box = document.getElementById('dadosInfo');
             if (!box) return;
             const ub = parseInt(localStorage.getItem('ultimoBackup') || '0');
@@ -9407,11 +8909,7 @@ function renderizarRota() {
             });
             document.getElementById('chequeTotPend').textContent = chequeBRL(pend);
             document.getElementById('chequeTot7').textContent = chequeBRL(s7);
-            document.getElementById('chequeTotAtraso').textContent = chequeBRL(atraso);
             document.getElementById('chequeTotRec').textContent = chequeBRL(comp);
-            document.getElementById('chequeTotLib').textContent = chequeBRL(lib);
-            document.getElementById('chequeTotDev').textContent = chequeBRL(dev);
-            atualizarBotaoAvisosCheques();
 
             // seletor de mês
             const selMes = document.getElementById('chequeMes');
@@ -9483,18 +8981,15 @@ function renderizarRota() {
                         if (!c.depositadoEm && ms <= 0) botoes += '<button class="btn btn-sm btn-solid" onclick="marcarChequeDepositado(\'' + id + '\', true)">🏦 Depositei</button> ';
                         if (c.depositadoEm) botoes += '<button class="btn btn-sm btn-outline" onclick="marcarChequeDepositado(\'' + id + '\', false)">✖️ Não depositei</button> ';
                         botoes += '<button class="btn btn-sm btn-success" onclick="definirChequeStatus(\'' + id + '\',\'compensado\')">✅ Compensado</button> ' +
-                                  '<button class="btn btn-sm btn-danger" onclick="definirChequeStatus(\'' + id + '\',\'devolvido\')">↩️ Devolvido</button> ' +
-                                  '<button class="btn btn-sm btn-warning" onclick="definirChequeStatus(\'' + id + '\',\'sustado\')">✋ Sustado</button> ' +
                                   '<button class="btn btn-sm btn-warning" onclick="definirChequeStatus(\'' + id + '\',\'inativo\')">🚫 Inativar</button> ';
                     } else {
                         botoes += '<button class="btn btn-sm btn-info" onclick="definirChequeStatus(\'' + id + '\',\'aberto\')">↩️ Reabrir</button> ';
                     }
-                    if (st === 'aberto' || chequeEhProblema(st)) botoes += '<button class="btn btn-sm btn-success" onclick="lembrarChequeWhats(\'' + id + '\')">💬 Cobrar/Lembrar</button> ';
                     botoes += '<button class="btn btn-sm btn-info" onclick="editarCheque(\'' + id + '\')">✏️ Editar</button> ' +
                               '<button class="btn btn-sm btn-danger" onclick="excluirCheque(\'' + id + '\')">🗑️ Excluir</button>';
 
                     html += '<div class="gasto-card cheque-card' + (st === 'inativo' ? ' inativo' : '') + (st === 'compensado' ? ' recebido' : '') + '">' +
-                        '<div class="gasto-header"><div><strong>🧾 ' + (c.numero ? 'Cheque ' + sanitizar(c.numero) : 'Cheque') + '</strong>' + tag + '</div>' +
+                        '<div class="gasto-header"><div><strong>🧾 ' + (c.numero ? 'Pedido nº ' + sanitizar(c.numero) : 'Cheque') + '</strong>' + tag + '</div>' +
                         '<span class="valor">' + chequeBRL(c.valor) + '</span></div>' +
                         '<div class="gasto-descricao"><strong>👤 Emitente:</strong> ' + sanitizar(c.emitente) + '</div>' +
                         '<div class="gasto-detalhes">📅 Data do cheque: ' + chequeFmt(chequeParseData(c.data)) + '</div>' +
@@ -9507,7 +9002,8 @@ function renderizarRota() {
 
         function chequeLimparForm() {
             chequeEditandoId = null;
-            ['chequeNumero', 'chequeEmitente', 'chequeValor', 'chequeData', 'chequePedido'].forEach(i => document.getElementById(i).value = '');
+            ['chequeNumero', 'chequeEmitente', 'chequeValor', 'chequeData', 'chequeClienteId'].forEach(i => document.getElementById(i).value = '');
+            chequeMostrarInfoCliente(null);
             document.getElementById('chequePrazo').value = 4;
             document.getElementById('chequeModo').value = 'u';
             document.getElementById('chequeFormTitulo').textContent = '➕ Novo Cheque';
@@ -9525,7 +9021,9 @@ function renderizarRota() {
             document.getElementById('chequeData').value = c.data;
             document.getElementById('chequePrazo').value = c.prazo;
             document.getElementById('chequeModo').value = c.modo || 'u';
-            document.getElementById('chequePedido').value = c.pedidoId || '';
+            const cliEd = c.clienteId ? getClientes().find(x => x.id === c.clienteId) : null;
+            document.getElementById('chequeClienteId').value = cliEd ? cliEd.id : '';
+            chequeMostrarInfoCliente(cliEd);
             document.getElementById('chequeFormTitulo').textContent = '✏️ Editando cheque';
             document.getElementById('chequeBtnSalvar').textContent = '💾 Atualizar Cheque';
             document.getElementById('chequeBtnCancelar').style.display = '';
@@ -9539,23 +9037,18 @@ function renderizarRota() {
             const prazo = Math.max(0, parseInt(document.getElementById('chequePrazo').value) || 0);
             const modo = document.getElementById('chequeModo').value;
             const numero = document.getElementById('chequeNumero').value.trim();
-            const pedidoNum = parseInt(document.getElementById('chequePedido').value) || null;
 
+            if (!numero) { toast('Informe o número do pedido.', 'warning'); return; }
             if (!emitente) { toast('Informe o emitente do cheque.', 'warning'); return; }
             if (!valor || valor <= 0) { toast('Informe um valor válido.', 'warning'); return; }
             if (!data) { toast('Informe a data do cheque.', 'warning'); return; }
 
             // vínculo com o cliente cadastrado (pelo nome) e com o pedido (se informado)
             const nEmit = normalizarTexto(emitente);
-            const cli = getClientes().find(x => normalizarTexto(x.fantasia) === nEmit || normalizarTexto(x.razao) === nEmit);
+            const selId = (document.getElementById('chequeClienteId') || {}).value || '';
+            const cli = (selId && getClientes().find(x => x.id === selId)) || getClientes().find(x => normalizarTexto(x.fantasia) === nEmit || normalizarTexto(x.razao) === nEmit);
             let clienteId = cli ? cli.id : null;
             let pedidoId = null;
-            if (pedidoNum) {
-                const ped = getDB('pedidos').find(p => p && p.id === pedidoNum);
-                if (!ped) { toast('O pedido #' + String(pedidoNum).padStart(3, '0') + ' não existe.', 'warning'); return; }
-                pedidoId = pedidoNum;
-                if (!clienteId) clienteId = ped.idCliente || null;
-            }
 
             const cheques = getCheques();
             if (chequeEditandoId) {
@@ -9648,7 +9141,7 @@ function renderizarRota() {
             });
         }
 
-        function verificarChequesLiberados() {
+        function verificarChequesLiberados() { return;
             let avisados = [];
             try { avisados = JSON.parse(localStorage.getItem('chequesAvisados') || '[]'); } catch (e) { avisados = []; }
             const novos = chequesLiberadosParaDeposito().filter(c => avisados.indexOf(c.id) < 0);
@@ -9671,12 +9164,87 @@ function renderizarRota() {
         setInterval(verificarChequesLiberados, 60000);
         setTimeout(verificarChequesLiberados, 4000);
 
+        // ---------- avisos de cheque no Telegram ----------
+        // Atenção: o token fica visível no código da página. Não publique este arquivo em lugar aberto.
+        const TG_TOKEN = '9243191769:AAHFliCAMQjvitSf9oKwCE8DlmVa0GHtbSE';
+        const TG_CHAT_ID = '6250806344';
+        const TG_JANELA_MS = 12 * 3600 * 1000;   // se o sistema só abrir depois do horário, ainda envia por até 12h
+        // dias = deslocamento em relação à data do cheque (data de depósito); hora = horário de Brasília
+        const TG_AVISOS = [
+            { tipo: 'v16', dias: -1, hora: 16, titulo: '🏦 Cheque liberado para depósito (a data é amanhã)' },
+            { tipo: 'd10', dias: 0,  hora: 10, titulo: '📅 HOJE é dia de depositar' },
+            { tipo: 'd18', dias: 0,  hora: 18, titulo: '⏰ 18h — ainda não marcado como depositado hoje' },
+            { tipo: 'n08', dias: 1,  hora: 8,  titulo: '❓ Bom dia! Você já depositou o cheque de ontem?' }
+        ];
+        let tgVerificando = false;
+
+        function tgEnviar(texto) {
+            return fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: TG_CHAT_ID, text: texto })
+            }).then(r => r.json()).then(j => !!(j && j.ok)).catch(() => false);
+        }
+
+        function tgLerEnviados() {
+            try { return JSON.parse(localStorage.getItem('tgChequesEnviados') || '{}') || {}; } catch (e) { return {}; }
+        }
+
+        function tgSalvarEnviados(o) {
+            try {
+                const ks = Object.keys(o);
+                if (ks.length > 600) ks.sort((a, b) => o[a] - o[b]).slice(0, ks.length - 600).forEach(k => delete o[k]);
+                localStorage.setItem('tgChequesEnviados', JSON.stringify(o));
+            } catch (e) {}
+        }
+
+        async function verificarTelegramCheques() {
+            if (tgVerificando) return;
+            tgVerificando = true;
+            try {
+                const agora = chequeAgoraBR();
+                const enviados = tgLerEnviados();
+                const grupos = {};
+                getCheques().forEach(c => {
+                    if (!c.data || chequeStatus(c) !== 'aberto' || c.depositadoEm) return;
+                    const p = c.data.split('-').map(Number);
+                    TG_AVISOS.forEach(a => {
+                        const quando = Date.UTC(p[0], p[1] - 1, p[2] + a.dias, a.hora, 0, 0);
+                        if (agora < quando || agora >= quando + TG_JANELA_MS) return;
+                        const k = c.id + '|' + a.tipo;
+                        if (enviados[k]) return;
+                        (grupos[a.tipo] = grupos[a.tipo] || []).push({ c: c, k: k });
+                    });
+                });
+                for (const a of TG_AVISOS) {
+                    const itens = grupos[a.tipo];
+                    if (!itens || !itens.length) continue;
+                    const total = itens.reduce((s, x) => s + x.c.valor, 0);
+                    const linhas = itens.map(x => '• ' + x.c.emitente + (x.c.numero ? ' (nº ' + x.c.numero + ')' : '') + ' — ' + chequeBRL(x.c.valor) + ' — data ' + chequeFmt(chequeParseData(x.c.data)));
+                    const texto = a.titulo + '\n\n' + linhas.join('\n') + '\n\nTotal: ' + chequeBRL(total);
+                    if (await tgEnviar(texto)) {
+                        itens.forEach(x => { enviados[x.k] = Date.now(); });
+                        tgSalvarEnviados(enviados);
+                    }
+                }
+            } catch (e) { /* aviso é opcional */ }
+            tgVerificando = false;
+        }
+        setInterval(verificarTelegramCheques, 60000);
+        setTimeout(verificarTelegramCheques, 5000);
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) verificarTelegramCheques(); });
+
         // ---------- simulador de antecipação ----------
         const antecDesmarcados = {};
+        const ANTEC_TAXA_PADRAO = 5.1;   // % ao mês  (5,1 ÷ 30 = 0,17% ao dia)
+        const ANTEC_DIAS_MINIMOS = 30;   // cheque que cai em menos de 30 dias é cobrado como se fossem 30
 
         function abrirAntecipacao() {
-            document.getElementById('antecTaxa').value = localStorage.getItem('taxaAntecipacao') || '';
-            document.getElementById('antecTarifa').value = localStorage.getItem('tarifaAntecipacao') || '';
+            document.getElementById('antecTaxa').value = ANTEC_TAXA_PADRAO;
+            const sel = document.getElementById('antecMes');
+            const meses = {};
+            getCheques().filter(c => chequeStatus(c) === 'aberto' && c.data).forEach(c => { meses[chequeMesKey(chequeParseData(c.data))] = true; });
+            sel.innerHTML = '<option value="">Todos os meses</option>' + Object.keys(meses).sort().map(k => '<option value="' + k + '">' + chequeMesLabel(k) + '</option>').join('');
             renderizarAntecipacao();
             document.getElementById('modalAntecipacao').classList.add('show');
         }
@@ -9688,31 +9256,37 @@ function renderizarRota() {
 
         function renderizarAntecipacao() {
             const taxaTxt = document.getElementById('antecTaxa').value;
-            const tarifaTxt = document.getElementById('antecTarifa').value;
-            try { localStorage.setItem('taxaAntecipacao', taxaTxt); localStorage.setItem('tarifaAntecipacao', tarifaTxt); } catch (e) {}
-            const taxa = Math.max(0, parseFloat(taxaTxt) || 0);
-            const tarifa = Math.max(0, parseFloat(tarifaTxt) || 0);
+            const taxa = taxaTxt === '' ? ANTEC_TAXA_PADRAO : Math.max(0, parseFloat(taxaTxt) || 0);
+            const taxaDia = taxa / 30;
+            const mesSel = document.getElementById('antecMes').value;
             const hoje = chequeHoje();
-            const lista = getCheques().filter(c => chequeStatus(c) === 'aberto')
-                .map(c => ({ c: c, cr: chequeDataCredito(c) })).sort((a, b) => a.cr - b.cr);
+            // dias contados a partir da DATA DO CHEQUE (pré-datada)
+            const lista = getCheques().filter(c => chequeStatus(c) === 'aberto' && c.data)
+                .map(c => ({ c: c, dt: chequeParseData(c.data) }))
+                .filter(x => !mesSel || chequeMesKey(x.dt) === mesSel)
+                .sort((a, b) => a.dt - b.dt);
             const box = document.getElementById('antecLista');
-            if (!lista.length) { box.innerHTML = '<div class="empty-state"><div class="icon">🧾</div><h3>Nenhum cheque em aberto</h3></div>'; return; }
+            if (!lista.length) { box.innerHTML = '<div class="empty-state"><div class="icon">🧾</div><h3>Nenhum cheque em aberto' + (mesSel ? ' neste mês' : '') + '</h3></div>'; return; }
             let bruto = 0, desc = 0, qtd = 0;
             let html = '';
             lista.forEach(x => {
-                const dias = Math.max(0, Math.round((x.cr - hoje) / 864e5));
-                const d = x.c.valor * (taxa / 100) * (dias / 30) + tarifa;
+                const dias = Math.max(0, Math.round((x.dt - hoje) / 864e5));
+                const diasCobrados = Math.max(ANTEC_DIAS_MINIMOS, dias);
+                const d = x.c.valor * (taxaDia / 100) * diasCobrados;
                 const marcado = !antecDesmarcados[x.c.id];
                 if (marcado) { bruto += x.c.valor; desc += d; qtd++; }
-                html += '<label style="display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--borda);cursor:pointer;' + (marcado ? '' : 'opacity:0.45;') + '">' +
-                    '<input type="checkbox" ' + (marcado ? 'checked' : '') + ' onchange="alternarAntecipacao(\'' + x.c.id + '\')">' +
-                    '<div style="flex:1;min-width:0;"><strong>' + sanitizar(x.c.emitente) + '</strong>' + (x.c.numero ? ' <small>(nº ' + sanitizar(x.c.numero) + ')</small>' : '') +
-                    '<div style="font-size:12px;font-weight:400;color:var(--sub);">' + chequeBRL(x.c.valor) + ' · cai em ' + chequeFmt(x.cr) + ' (' + dias + ' dias) · desconto <span style="color:#b91c1c;">- ' + chequeBRL(d) + '</span></div></div>' +
-                    '<div style="text-align:right;white-space:nowrap;"><div style="font-size:11px;font-weight:400;color:var(--sub);">líquido</div><b>' + chequeBRL(x.c.valor - d) + '</b></div></label>';
+                const prazoTxt = dias + (dias === 1 ? ' dia' : ' dias') + (dias < ANTEC_DIAS_MINIMOS ? ' · cobra ' + ANTEC_DIAS_MINIMOS : '');
+                html += '<div class="antec-item' + (marcado ? '' : ' off') + '" onclick="alternarAntecipacao(\'' + x.c.id + '\')">' +
+                    '<input type="checkbox" tabindex="-1" ' + (marcado ? 'checked' : '') + '>' +
+                    '<div class="antec-info"><div class="antec-nome">' + sanitizar(x.c.emitente) + (x.c.numero ? ' <small>(nº ' + sanitizar(x.c.numero) + ')</small>' : '') + '</div>' +
+                    '<div class="antec-meta">' + chequeBRL(x.c.valor) + ' · data do cheque ' + chequeFmt(x.dt) + '<br>' + prazoTxt + ' · desconto <span class="antec-desc">- ' + chequeBRL(d) + '</span></div></div>' +
+                    '<div class="antec-liq"><span>líquido</span><b>' + chequeBRL(x.c.valor - d) + '</b></div></div>';
             });
-            html += '<div style="margin-top:12px;padding:12px 14px;background:var(--verde-muito-claro);border:1px solid var(--verde-claro);border-radius:12px;line-height:1.8;">' +
-                '<b>' + qtd + '</b> cheque(s) selecionado(s)<br>Valor bruto: <b>' + chequeBRL(bruto) + '</b><br>Custo da antecipação: <b style="color:#b91c1c;">' + chequeBRL(desc) + '</b>' + (bruto > 0 ? ' (' + (desc / bruto * 100).toFixed(2).replace('.', ',') + '%)' : '') +
-                '<br>Você recebe: <b style="color:var(--verde);font-size:18px;">' + chequeBRL(bruto - desc) + '</b></div>';
+            html += '<div class="antec-resumo">' +
+                '<div><span>Cheques selecionados</span><b>' + qtd + '</b></div>' +
+                '<div><span>Valor bruto</span><b>' + chequeBRL(bruto) + '</b></div>' +
+                '<div><span>Custo da antecipação</span><b class="antec-desc">' + chequeBRL(desc) + (bruto > 0 ? ' (' + (desc / bruto * 100).toFixed(2).replace('.', ',') + '%)' : '') + '</b></div>' +
+                '<div class="antec-total"><span>Você recebe</span><b>' + chequeBRL(bruto - desc) + '</b></div></div>';
             box.innerHTML = html;
         }
 
@@ -9732,6 +9306,132 @@ function renderizarRota() {
             setCheques(cheques.filter(c => chequeStatus(c) !== 'compensado'));
             toast('Cheques compensados apagados.', 'warning');
             carregarCheques();
+        }
+
+        // ================================================================
+        // EMITENTE: LISTA DE CLIENTES (nome, CNPJ, dados)
+        // ================================================================
+        function chequeClientesFiltrados(termo) {
+            const t = normalizarTexto(termo || '');
+            const td = t.replace(/\D/g, '');
+            return getClientes().filter(c => !t ||
+                normalizarTexto(c.fantasia).includes(t) || normalizarTexto(c.razao).includes(t) ||
+                normalizarTexto(c.cidade).includes(t) ||
+                (td && String(c.cnpj || '').replace(/\D/g, '').includes(td)) ||
+                (td && String(c.tel || '').replace(/\D/g, '').includes(td)));
+        }
+        function chequeMostrarLista(abrirTudo) {
+            const box = document.getElementById('chequeListaClientes');
+            if (!box) return;
+            const l = chequeClientesFiltrados(abrirTudo ? '' : document.getElementById('chequeEmitente').value);
+            if (!l.length) {
+                box.innerHTML = '<div style="padding:12px 14px;color:var(--sub);font-size:13px;">Nenhum cliente encontrado. Você pode digitar o nome manualmente.</div>';
+            } else {
+                box.innerHTML = l.slice(0, 40).map(c => '<div class="cheque-cli-item" onmousedown="event.preventDefault();chequeSelecionarCliente(\'' + c.id + '\')"><strong>' +
+                    sanitizar(c.fantasia || c.razao || '-') + '</strong><div style="font-size:12px;color:var(--sub);">' +
+                    [c.cnpj ? 'CNPJ ' + sanitizar(c.cnpj) : '', c.cidade ? sanitizar(c.cidade) : '', c.tel ? sanitizar(c.tel) : ''].filter(Boolean).join(' · ') + '</div></div>').join('');
+            }
+            box.style.display = 'block';
+        }
+        function chequeAlternarLista() {
+            const box = document.getElementById('chequeListaClientes');
+            if (box && box.style.display === 'block') box.style.display = 'none'; else chequeMostrarLista(true);
+        }
+        function chequeSelecionarCliente(id) {
+            const c = getClientes().find(x => x.id === id);
+            if (!c) return;
+            document.getElementById('chequeEmitente').value = c.fantasia || c.razao || '';
+            document.getElementById('chequeClienteId').value = c.id;
+            document.getElementById('chequeListaClientes').style.display = 'none';
+            chequeMostrarInfoCliente(c);
+        }
+        function chequeMostrarInfoCliente(c) {
+            const el = document.getElementById('chequeClienteInfo');
+            if (!el) return;
+            if (!c) { el.style.display = 'none'; el.innerHTML = ''; return; }
+            const end = [c.endereco, c.numero].filter(Boolean).join(', ');
+            const linhas = [
+                c.razao && c.razao !== c.fantasia ? '🏢 ' + sanitizar(c.razao) : '',
+                c.cnpj ? '🧾 CNPJ: ' + sanitizar(c.cnpj) : '',
+                (end || c.bairro || c.cidade) ? '📍 ' + sanitizar([end, c.bairro, c.cidade].filter(Boolean).join(' - ')) : '',
+                c.tel ? '📞 ' + sanitizar(c.tel) : ''
+            ].filter(Boolean);
+            el.innerHTML = '<div style="font-weight:700;color:var(--verde);">' + sanitizar(c.fantasia || c.razao || '') + '</div>' + linhas.map(l => '<div>' + l + '</div>').join('');
+            el.style.display = 'block';
+        }
+        function chequeEmitenteDigitou() {
+            document.getElementById('chequeClienteId').value = '';
+            chequeMostrarInfoCliente(null);
+            chequeMostrarLista(false);
+        }
+        document.addEventListener('click', function(e) {
+            if (e.target.closest && !e.target.closest('#chequeEmitenteWrap')) {
+                const b = document.getElementById('chequeListaClientes');
+                if (b) b.style.display = 'none';
+            }
+        });
+
+        // ================================================================
+        // RESERVA: simulação por cheque compensado (não salva nada)
+        // ================================================================
+        let reservaChequeAtual = null;
+        function carregarReserva() {
+            const box = document.getElementById('reservaLista');
+            if (!box) return;
+            const todos = getCheques().filter(c => chequeStatus(c) === 'compensado')
+                .map(c => ({ c: c, cr: chequeDataCredito(c) })).sort((a, b) => b.cr - a.cr);
+            const sel = document.getElementById('reservaMes');
+            const anterior = sel.value;
+            const chaves = Array.from(new Set(todos.map(x => chequeMesKey(x.cr)))).sort().reverse();
+            sel.innerHTML = '<option value="">Todos os meses</option>' + chaves.map(k => '<option value="' + k + '">' + chequeMesLabel(k) + '</option>').join('');
+            if (chaves.indexOf(anterior) >= 0) sel.value = anterior;
+            const lista = sel.value ? todos.filter(x => chequeMesKey(x.cr) === sel.value) : todos;
+            if (!lista.length) {
+                box.innerHTML = '<div class="empty-state"><div class="icon">💰</div><h3>Nenhum cheque compensado</h3><p>Quando você marcar um cheque como compensado, ele aparece aqui.</p></div>';
+                return;
+            }
+            const grupos = {}, ordem = [];
+            lista.forEach(x => { const k = chequeMesKey(x.cr); if (!grupos[k]) { grupos[k] = []; ordem.push(k); } grupos[k].push(x); });
+            let html = '';
+            ordem.forEach(k => {
+                const itens = grupos[k];
+                const sub = itens.reduce((s, x) => s + x.c.valor, 0);
+                html += '<div class="cheque-mes"><span>📅 ' + chequeMesLabel(k) + ' · ' + itens.length + (itens.length > 1 ? ' cheques' : ' cheque') + '</span><b>' + chequeBRL(sub) + '</b></div>';
+                itens.forEach(x => {
+                    const c = x.c;
+                    html += '<div class="gasto-card cheque-card"><div class="gasto-header"><div><strong>🧾 ' + (c.numero ? 'Pedido nº ' + sanitizar(c.numero) : 'Cheque') + '</strong><span class="cheque-tag ok">✅ Compensado</span></div>' +
+                        '<span class="valor">' + chequeBRL(c.valor) + '</span></div>' +
+                        '<div class="gasto-descricao"><strong>👤 Emitente:</strong> ' + sanitizar(c.emitente) + '</div>' +
+                        '<div class="cheque-credito">💵 Caiu na conta em <b>' + chequeFmt(x.cr) + '</b></div>' +
+                        '<div class="gasto-acoes"><button class="btn btn-sm btn-gold" onclick="abrirReserva(\'' + c.id + '\')">💰 Reservar</button></div></div>';
+                });
+            });
+            box.innerHTML = html;
+        }
+        function abrirReserva(id) {
+            const c = getCheques().find(x => x.id === id);
+            if (!c) return;
+            reservaChequeAtual = c;
+            document.getElementById('reservaInfo').textContent = (c.numero ? 'Pedido nº ' + c.numero + ' · ' : '') + c.emitente;
+            document.getElementById('reservaTotal').textContent = chequeBRL(c.valor);
+            document.getElementById('reservaPct').value = 10;
+            reservaAtualizar();
+            document.getElementById('modalReserva').classList.add('show');
+        }
+        function reservaDefinir(p) {
+            document.getElementById('reservaPct').value = p;
+            reservaAtualizar();
+        }
+        function reservaAtualizar() {
+            if (!reservaChequeAtual) return;
+            const slider = document.getElementById('reservaPct');
+            const pct = Math.min(100, Math.max(10, parseInt(slider.value) || 10));
+            slider.style.setProperty('--f', ((pct - 10) / 90).toFixed(4));
+            document.querySelectorAll('.reserva-chips button').forEach(b => b.classList.toggle('ativo', parseInt(b.textContent) === pct));
+            const guardar = Math.round(reservaChequeAtual.valor * pct) / 100;
+            document.getElementById('reservaPctTxt').textContent = pct + '%';
+            document.getElementById('reservaGuardar').textContent = chequeBRL(guardar);
+            document.getElementById('reservaFica').textContent = chequeBRL(reservaChequeAtual.valor - guardar);
         }
 
         // Campo de CSV entre aspas; textos que começam com = + - @ ganham um apóstrofo (evita execução de fórmula no Excel)
@@ -10024,6 +9724,23 @@ function renderizarRota() {
             }
         }
 
+        function gastoInicioSemana(iso) {
+            const p = String(iso).split('-').map(Number);
+            const d = new Date(p[0], p[1] - 1, p[2]);
+            d.setDate(d.getDate() - d.getDay());   // domingo
+            return dataLocalISO(d);
+        }
+        function gastoFimSemana(inicioIso) {
+            const p = String(inicioIso).split('-').map(Number);
+            const d = new Date(p[0], p[1] - 1, p[2]);
+            d.setDate(d.getDate() + 6);            // sábado
+            return dataLocalISO(d);
+        }
+        function gastoSemanaLabel(inicioIso) {
+            const ini = formatarDataBR(inicioIso).substring(0, 5);
+            return 'Semana ' + ini + ' a ' + formatarDataBR(gastoFimSemana(inicioIso));
+        }
+
         function carregarGastos() {
             const gastos = getGastos();
             const hoje = hojeISO();
@@ -10031,10 +9748,10 @@ function renderizarRota() {
             const gastosHoje = gastos.filter(g => g.data === hoje && !g.entregaId);
             const totalHoje = gastosHoje.reduce((s, g) => s + (Number(g.valor) || 0), 0);
 
-            const inicioSemana = new Date();
-            inicioSemana.setDate(inicioSemana.getDate() - 7);
-            const inicioSemanaStr = dataLocalISO(inicioSemana);
-            const gastosSemana = gastos.filter(g => g.data >= inicioSemanaStr && g.data <= hoje && !g.entregaId);
+            // semana de domingo a sábado (a semana atual, não os últimos 7 dias)
+            const inicioSemanaStr = gastoInicioSemana(hoje);
+            const fimSemanaStr = gastoFimSemana(inicioSemanaStr);
+            const gastosSemana = gastos.filter(g => g.data >= inicioSemanaStr && g.data <= fimSemanaStr && !g.entregaId);
             const totalSemana = gastosSemana.reduce((s, g) => s + (Number(g.valor) || 0), 0);
 
             const mesAtual = hoje.substring(0, 7);
@@ -10048,11 +9765,31 @@ function renderizarRota() {
             const container = document.getElementById('listaGastos');
             if (!container) return;
 
-            const gastosOrdenados = [...gastos].sort((a, b) => {
+            const ordenar = (a, b) => {
                 if (a.data > b.data) return -1;
                 if (a.data < b.data) return 1;
-                return b.timestamp - a.timestamp;
-            });
+                return (b.timestamp || 0) - (a.timestamp || 0);
+            };
+            const modo = (document.getElementById('gastoVer') || {}).value || 'todos';
+            const selPeriodo = document.getElementById('gastoPeriodo');
+            const wrapPeriodo = document.getElementById('gastoPeriodoWrap');
+            const chaveDe = g => modo === 'semana' ? gastoInicioSemana(g.data) : String(g.data || '').substring(0, 7);
+            let periodoSel = '';
+            if (modo === 'todos') {
+                wrapPeriodo.style.display = 'none';
+            } else {
+                const chaves = Array.from(new Set(gastos.filter(g => g.data).map(chaveDe))).sort().reverse();
+                const anterior = selPeriodo.value;
+                const rotulo = k => modo === 'semana' ? gastoSemanaLabel(k) : chequeMesLabel(k);
+                document.getElementById('gastoPeriodoLabel').textContent = modo === 'semana' ? '📆 Semana' : '📆 Mês';
+                selPeriodo.innerHTML = '<option value="">' + (modo === 'semana' ? 'Todas as semanas' : 'Todos os meses') + '</option>' + chaves.map(k => '<option value="' + k + '">' + rotulo(k) + '</option>').join('');
+                if (chaves.indexOf(anterior) >= 0) selPeriodo.value = anterior;
+                periodoSel = selPeriodo.value;
+                wrapPeriodo.style.display = '';
+            }
+            const gastosOrdenados = gastos
+                .filter(g => modo === 'todos' || !periodoSel || chaveDe(g) === periodoSel)
+                .sort(ordenar);
 
             if (gastosOrdenados.length === 0) {
                 container.innerHTML =
@@ -10068,7 +9805,8 @@ function renderizarRota() {
                 gasolina: '⛽ Gasolina',
                 farmacia: '💊 Farmácia',
                 mercado: '🛒 Mercado',
-                oficina: '🔧 Oficina'
+                oficina: '🔧 Oficina',
+                outros: '📌 Outros'
             };
 
             const coresCategoria = {
@@ -10079,11 +9817,22 @@ function renderizarRota() {
                 gasolina: 'gasolina',
                 farmacia: 'farmacia',
                 mercado: 'mercado',
-                oficina: 'oficina'
+                oficina: 'oficina',
+                outros: 'outros'
             };
 
-            let html = '';
+            const somaLivres = arr => arr.filter(g => !g.entregaId).reduce((s, g) => s + (Number(g.valor) || 0), 0);
+            let html = '<div class="gasto-filtro-total"><span>' + gastosOrdenados.length + (gastosOrdenados.length === 1 ? ' gasto' : ' gastos') + ' exibido(s) · total</span><b>R$ ' + somaLivres(gastosOrdenados).toFixed(2) + '</b></div>';
+            let chaveAtual = null;
             gastosOrdenados.forEach((g, idx) => {
+                if (modo !== 'todos') {
+                    const k = chaveDe(g);
+                    if (k !== chaveAtual) {
+                        chaveAtual = k;
+                        const doGrupo = gastosOrdenados.filter(x => chaveDe(x) === k);
+                        html += '<div class="cheque-mes"><span>' + (modo === 'semana' ? '📆 ' + gastoSemanaLabel(k) : '📅 ' + chequeMesLabel(k)) + ' · ' + doGrupo.length + (doGrupo.length > 1 ? ' gastos' : ' gasto') + '</span><b>R$ ' + somaLivres(doGrupo).toFixed(2) + '</b></div>';
+                    }
+                }
                 const catLabel = categorias[g.categoria] || g.categoria || 'Outro';
                 const catClass = coresCategoria[g.categoria] || '';
                 const estaVinculado = g.entregaId ? true : false;
@@ -10201,7 +9950,8 @@ function renderizarRota() {
                 gasolina: 'Gasolina',
                 farmacia: 'Farmácia',
                 mercado: 'Mercado',
-                oficina: 'Oficina'
+                oficina: 'Oficina',
+                outros: 'Outros'
             };
 
             let csv = 'Data;Valor;Categoria;Descrição;Local;Vinculado\n';
@@ -10239,13 +9989,10 @@ function renderizarRota() {
                     if (overlay) overlay.style.display = 'none';
                 }, 3000);
 
-                migrarPedidosEntregues();
                 carregarDashboard();
                 renderizarClientes();
                 renderizarProdutos();
-                renderizarHistorico();
-                renderizarRota();
-                carregarSelectProdutos();
+                carregarRegioes();
                 carregarGastos();
 
                 const dataInput = document.getElementById('pedidoData');
@@ -10254,7 +10001,6 @@ function renderizarRota() {
                 const gastoDataInput = document.getElementById('gastoData');
                 if (gastoDataInput) gastoDataInput.value = hojeISO();
 
-                setTimeout(iniciarAssinaturas, 500);
 
                 const telInput = document.getElementById('cliTel');
                 if (telInput) {
@@ -10288,8 +10034,6 @@ function renderizarRota() {
                 });
 
                 restaurarVisibilidadeValores();
-                carregarTabelaCustoUI();
-                atualizarSugestaoNumeroPedido();
 
                 const especInput = document.getElementById('especificacoesPedido');
                 if (especInput) {
